@@ -18,11 +18,14 @@ import java.util.stream.Stream;
 
 public class Orchestrator {
 
+    public String header1 = "Date;" + "HomeTeamid;" + "HomeTeamName;" + "AwayTeamId;" + "AwayTeamName;" + "HomeGoals;" + "AwayGoals;";
+    public String header = "Date;" + "HomeTeamid;" + "HomeTeamName;" + "AwayTeamId;" + "AwayTeamName;" + "HomeGoals;" + "AwayGoals;"
+            + "FullTimeResult;" + "AverageHomeWinOdd;" + "AverageDrawWinOdd;" + "AverageAwayWinOdd;" + "AvgOver2_5;" + "AvgUnder2_5;" + "Div";
     public static final int PREMIER_LEAGUE_ID = 39;
     public static final String idChar = '"' + "id" + '"';
     public static final String teamChar = '"' + "name" + '"';
     public static final String CSV_FILE_NAME = "football-data_wIndexes.csv";
-    public static final String header = "Date;" + "HomeTeamid;" + "HomeTeamName;" + "AwayTeamId;" + "AwayTeamName;" + "HomeGoals;" + "AwayGoals;";
+
 
 
     public void start() throws IOException, ParseException {
@@ -58,15 +61,23 @@ public class Orchestrator {
         }
         for (Results result : results) {
             for (TeamData team : teamsData) {
+               /* System.out.println(result.getHomeTeamName());
+                System.out.println(result.getAwayTeamName());*/
                 if (result.getHomeTeamName().equalsIgnoreCase(team.getName()) ||
                         (result.getHomeTeamName().equalsIgnoreCase("MAN CITY") && team.getName().equalsIgnoreCase("MANCHESTER CITY")) ||
-                        (result.getHomeTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED"))) {
+                        (result.getHomeTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED"))||
+                        (result.getHomeTeamName().equalsIgnoreCase("Hull") && team.getName().equalsIgnoreCase("Hull City")) ||
+                        (result.getHomeTeamName().equalsIgnoreCase("Sheffield United") && team.getName().equalsIgnoreCase("Sheffield Utd")) ||
+                        (result.getHomeTeamName().equalsIgnoreCase("Stoke") && team.getName().equalsIgnoreCase("Stoke City"))) {
                     team.addHomeResults(result);
                     result.setHomeTeamId(team.getId());
                 }
                 if (result.getAwayTeamName().equalsIgnoreCase(team.getName()) ||
                         (result.getAwayTeamName().equalsIgnoreCase("MAN CITY") && team.getName().equalsIgnoreCase("MANCHESTER CITY")) ||
-                        (result.getAwayTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED"))) {
+                        (result.getAwayTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED")) ||
+                        (result.getAwayTeamName().equalsIgnoreCase("Hull") && team.getName().equalsIgnoreCase("Hull City")) ||
+                        (result.getAwayTeamName().equalsIgnoreCase("Sheffield United") && team.getName().equalsIgnoreCase("Sheffield Utd")) ||
+                        (result.getAwayTeamName().equalsIgnoreCase("Stoke") && team.getName().equalsIgnoreCase("Stoke City"))) {
                     team.addAwayResults(result);
                     result.setAwayTeamId(team.getId());
                 }
@@ -74,17 +85,27 @@ public class Orchestrator {
         }
         return results;
     }
+    /*Hull -> Hull City
+Sheffield United -> Sheffield Utd
+Stoke -> Stoke City*/
 
     private ArrayList<Results> getHomeTeamScores(String[] results) throws ParseException {
         // row 0 -> headers, não interessa para aqui
         ArrayList<Results> finalResults = new ArrayList<Results>();
-        String[] headers = results[0].split(",");
+        ArrayList<String> headers = new ArrayList<String>(Arrays.asList(results[0].split(",")));
+
         for (int i = 1; i < results.length; i++) {
             String[] tmp = results[i].split(",");
-            if (headers[2].equalsIgnoreCase("TIME"))
-                finalResults.add(new Results(tmp[3], tmp[4], tmp[5], tmp[6], tmp[1]));
+
+            if(headers.indexOf("Avg>2.5") > 0)
+            finalResults.add(new Results(tmp[headers.indexOf("Div")],tmp[headers.indexOf("HomeTeam")],tmp[headers.indexOf("AwayTeam")],tmp[headers.indexOf("Date")],tmp[headers.indexOf("FTHG")],
+                    tmp[headers.indexOf("FTAG")],tmp[headers.indexOf("FTR")],tmp[headers.indexOf("AvgH")],tmp[headers.indexOf("AvgD")],
+                    tmp[headers.indexOf("AvgA")],tmp[headers.indexOf("Avg>2.5")],tmp[headers.indexOf("Avg<2.5")]));
             else
-                finalResults.add(new Results(tmp[2], tmp[3], tmp[4], tmp[5], tmp[1]));
+                finalResults.add(new Results(tmp[headers.indexOf("Div")],tmp[headers.indexOf("HomeTeam")],tmp[headers.indexOf("AwayTeam")],tmp[headers.indexOf("Date")],tmp[headers.indexOf("FTHG")],
+                        tmp[headers.indexOf("FTAG")],tmp[headers.indexOf("FTR")],tmp[headers.indexOf("B365H")],tmp[headers.indexOf("B365D")],
+                        tmp[headers.indexOf("B365A")],tmp[headers.indexOf("BbAv>2.5")],tmp[headers.indexOf("BbAv<2.5")]));
+
         }
         return finalResults;
     }
@@ -135,8 +156,9 @@ public class Orchestrator {
     }
 
     public String getResultToCSVFormat(Results result) {
-        return result.getGameDateFormated() + ";" + result.getHomeTeamId() + ";" + result.getHomeTeamName() + ";" + result.getAwayTeamId() + ";" + result.getAwayTeamName() + ";" + result.getHomeTeamScore() + ";" + result.getAwayTeamScore();
-
+        return result.getGameDateFormated() + ";" + result.getHomeTeamId() + ";" + result.getHomeTeamName() + ";" + result.getAwayTeamId() + ";" + result.getAwayTeamName() + ";" + result.getFull_Time_Home_Team_Goals() + ";" + result.getFull_Time_Away_Team_Goals() + ";"
+                + result.getFull_Time_Result() + ";" + result.getMarket_average_home_win_odds() + ";" + result.getMarket_average_draw_win_odds() + ";" + result.getMarket_average_away_win_odds() + ";" + result.getMarket_average_over_2_5_goals() + ";"
+                + result.getMarket_average_under_2_5_goals() + ";" + result.getDivision() + ";" ;
     }
 
 

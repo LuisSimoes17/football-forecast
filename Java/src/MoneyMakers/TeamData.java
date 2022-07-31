@@ -71,7 +71,7 @@ public class TeamData {
     public String getNameAndResultsAsString() {
         String nameAndResults = this.id + ";" + this.name + ";";
         for (Results results : this.HomeResults)
-            nameAndResults += results.getHomeTeamName() + " " + results.getHomeTeamScore() + ":" + results.getAwayTeamScore() + " " + results.getAwayTeamName() + ";";
+            nameAndResults += results.getHomeTeamName() + " " + results.getFull_Time_Home_Team_Goals() + ":" + results.getFull_Time_Away_Team_Goals() + " " + results.getAwayTeamName() + ";";
         return nameAndResults;
     }
 
