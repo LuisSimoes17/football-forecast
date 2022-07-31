@@ -11,6 +11,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,10 +23,10 @@ public class Orchestrator {
     public static final String idChar = '"' + "id" + '"';
     public static final String teamChar = '"' + "name" + '"';
     public static final String CSV_FILE_NAME = "results.csv";
-    public static final String header = "id;"+"name;"+"resultFromHomeTeam";
+    public static final String header = "Date;"+"HomeTeamid;"+"HomeTeamName;"+"AwayTeamId;"+"AwayTeamName;"+"HomeGoals;"+"AwayGoals;";
 
 
-    public void start() throws IOException {
+    public void start() throws IOException, ParseException {
         HttpURLConnection con = OPENAPI();
         HashMap<String, String> teamAndIds = fetchTeamAndIds(con);
         ArrayList<Results> results = readCVSFile();
@@ -38,7 +39,7 @@ public class Orchestrator {
 
     }
 
-    private ArrayList<TeamData> matchIdsAndTeams(HashMap<String, String> teamAndIds, ArrayList<Results> results) {
+    private ArrayList<Results> matchIdsAndTeams(HashMap<String, String> teamAndIds, ArrayList<Results> results) {
 
         ArrayList<TeamData> teamsData = new ArrayList<TeamData>();
 
@@ -47,28 +48,36 @@ public class Orchestrator {
             String value = teamAndIds.get(name).toString().replaceAll("\"","");
             teamsData.add(new TeamData(value,key));
         }
-        for (TeamData team: teamsData){
-            for(Results result: results){
+        for(Results result: results){
+            for (TeamData team: teamsData){
                 if(result.getHomeTeamName().equalsIgnoreCase(team.getName()) ||
                         (result.getHomeTeamName().equalsIgnoreCase("MAN CITY") && team.getName().equalsIgnoreCase("MANCHESTER CITY")) ||
-                        (result.getHomeTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED")))
-                    team.addResults(result);
+                        (result.getHomeTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED"))) {
+                    team.addHomeResults(result);
+                    result.setHomeTeamId(team.getId());
+                }
+                if(result.getAwayTeamName().equalsIgnoreCase(team.getName()) ||
+                        (result.getAwayTeamName().equalsIgnoreCase("MAN CITY") && team.getName().equalsIgnoreCase("MANCHESTER CITY")) ||
+                        (result.getAwayTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED"))) {
+                    team.addAwayResults(result);
+                    result.setAwayTeamId(team.getId());
+                }
             }
         }
-        return teamsData;
+        return results;
     }
 
-    private ArrayList<Results> getHomeTeamScores(String[] results){
+    private ArrayList<Results> getHomeTeamScores(String[] results) throws ParseException {
         // row 0 -> headers, não interessa para aqui
         ArrayList<Results> finalResults = new ArrayList<Results>();
         for(int i = 1; i < results.length; i++){
             String[] tmp = results[i].split(",");
-            finalResults.add(new Results(tmp[3],tmp[4],tmp[5],tmp[6]));
+            finalResults.add(new Results(tmp[3],tmp[4],tmp[5],tmp[6],tmp[1]));
         }
         return finalResults;
     }
 
-    private ArrayList<Results> readCVSFile() throws FileNotFoundException {
+    private ArrayList<Results> readCVSFile() throws FileNotFoundException, ParseException {
         Scanner sc = new Scanner(new File("Premier League.csv"));
         //parsing a CSV file into the constructor of Scanner class
         sc.useDelimiter("\n");
@@ -84,19 +93,21 @@ public class Orchestrator {
 
 
 
-    private void sendToCSV(ArrayList<TeamData> teams) throws IOException {
+    private void sendToCSV(ArrayList<Results> results) throws IOException {
         List<String[]> csvData = new ArrayList<>();
         csvData.add(new String[]{header});
-        sort(teams);
-        for (TeamData team: teams) {
-            //String id = team.getId().toString();
-            String nameAndResults = team.getNameAndResultsAsString();
-            csvData.add(new String[] {nameAndResults});
-        }
+        sort(results);
+        for(Results result : results)
+        csvData.add(new String[] {getResultToCSVFormat(result)});
+
 
         try (CSVWriter writer = new CSVWriter(new FileWriter(CSV_FILE_NAME))) {
             writer.writeAll(csvData, false);
         }
+    }
+    public String getResultToCSVFormat(Results result) {
+        return result.getGameDateFormated() + ";" + result.getHomeTeamId() + ";" + result.getHomeTeamName()  + ";" + result.getAwayTeamId() + ";" + result.getAwayTeamName() + ";" + result.getHomeTeamScore() + ";"+ result.getAwayTeamScore() + ";";
+
     }
 
 
@@ -205,11 +216,11 @@ public class Orchestrator {
         }
     }
 
-    private void sort(ArrayList<TeamData> list) {
+    private void sort(ArrayList<Results> list) {
 
         list.sort((o1, o2)
-                -> o1.getName().compareTo(
-                o2.getName()));
+                -> o1.getGameDate().compareTo(
+                o2.getGameDate()));
     }
 
     private boolean containsIgnoreCase(String str, String searchStr)     {
