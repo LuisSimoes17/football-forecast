@@ -21,7 +21,7 @@ public class Results {
         AwayTeamScore = awayTeamScore;
         String[] dateTmp = gameDate.split("/");
        // if(dateTmp.length == 1)
-            System.out.println(gameDate);
+          //  System.out.println(gameDate);
         String day = dateTmp[0];
         String month = dateTmp[1];
         String year = "";

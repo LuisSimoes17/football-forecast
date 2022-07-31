@@ -22,7 +22,7 @@ public class Orchestrator {
     public static final String idChar = '"' + "id" + '"';
     public static final String teamChar = '"' + "name" + '"';
     public static final String CSV_FILE_NAME = "football-data_wIndexes.csv";
-    public static final String header = "Date;"+"HomeTeamid;"+"HomeTeamName;"+"AwayTeamId;"+"AwayTeamName;"+"HomeGoals;"+"AwayGoals;";
+    public static final String header = "Date;" + "HomeTeamid;" + "HomeTeamName;" + "AwayTeamId;" + "AwayTeamName;" + "HomeGoals;" + "AwayGoals;";
 
 
     public void start() throws IOException, ParseException {
@@ -30,7 +30,7 @@ public class Orchestrator {
         ArrayList<Results> results = new ArrayList<Results>();
         HashMap<String, String> teamAndIds = new HashMap<String, String>();
         String[] tmpString = years.split(";");
-        for(int i = 0; i < tmpString.length; i++) {
+        for (int i = 0; i < tmpString.length; i++) {
 
             results.addAll(getDataForYear(tmpString[i]));
             HttpURLConnection con = OPENAPI(tmpString[i]);
@@ -51,20 +51,20 @@ public class Orchestrator {
 
         ArrayList<TeamData> teamsData = new ArrayList<TeamData>();
 
-        for (String name: teamAndIds.keySet()) {
-            String key = name.toString().replaceAll("\"","");
-            String value = teamAndIds.get(name).toString().replaceAll("\"","");
-            teamsData.add(new TeamData(value,key));
+        for (String name : teamAndIds.keySet()) {
+            String key = name.toString().replaceAll("\"", "");
+            String value = teamAndIds.get(name).toString().replaceAll("\"", "");
+            teamsData.add(new TeamData(value, key));
         }
-        for(Results result: results){
-            for (TeamData team: teamsData){
-                if(result.getHomeTeamName().equalsIgnoreCase(team.getName()) ||
+        for (Results result : results) {
+            for (TeamData team : teamsData) {
+                if (result.getHomeTeamName().equalsIgnoreCase(team.getName()) ||
                         (result.getHomeTeamName().equalsIgnoreCase("MAN CITY") && team.getName().equalsIgnoreCase("MANCHESTER CITY")) ||
                         (result.getHomeTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED"))) {
                     team.addHomeResults(result);
                     result.setHomeTeamId(team.getId());
                 }
-                if(result.getAwayTeamName().equalsIgnoreCase(team.getName()) ||
+                if (result.getAwayTeamName().equalsIgnoreCase(team.getName()) ||
                         (result.getAwayTeamName().equalsIgnoreCase("MAN CITY") && team.getName().equalsIgnoreCase("MANCHESTER CITY")) ||
                         (result.getAwayTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED"))) {
                     team.addAwayResults(result);
@@ -78,10 +78,13 @@ public class Orchestrator {
     private ArrayList<Results> getHomeTeamScores(String[] results) throws ParseException {
         // row 0 -> headers, não interessa para aqui
         ArrayList<Results> finalResults = new ArrayList<Results>();
-        for(int i = 1; i < results.length; i++){
+        String[] headers = results[0].split(",");
+        for (int i = 1; i < results.length; i++) {
             String[] tmp = results[i].split(",");
-            if(tmp.length >= 6)
-             finalResults.add(new Results(tmp[3],tmp[4],tmp[5],tmp[6],tmp[1]));
+            if (headers[2].equalsIgnoreCase("TIME"))
+                finalResults.add(new Results(tmp[3], tmp[4], tmp[5], tmp[6], tmp[1]));
+            else
+                finalResults.add(new Results(tmp[2], tmp[3], tmp[4], tmp[5], tmp[1]));
         }
         return finalResults;
     }
@@ -93,10 +96,10 @@ public class Orchestrator {
 
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
-               // System.out.println("File " + listOfFiles[i].getName());
+                // System.out.println("File " + listOfFiles[i].getName());
                 years += listOfFiles[i].getName() + ";";
             } else if (listOfFiles[i].isDirectory()) {
-               // System.out.println("Directory " + listOfFiles[i].getName());
+                // System.out.println("Directory " + listOfFiles[i].getName());
             }
         }
         return years;
@@ -109,36 +112,35 @@ public class Orchestrator {
         String file = "";
         //setting comma as delimiter pattern
         while (sc.hasNext()) {
-            file+= sc.next() + "\n";
+            file += sc.next() + "\n";
         }
 
         sc.close();
-      //  System.out.println(file);
+        //  System.out.println(file);
         return getHomeTeamScores(file.split("\n"));
     }
-
 
 
     private void sendToCSV(ArrayList<Results> results, String year) throws IOException {
         List<String[]> csvData = new ArrayList<>();
         csvData.add(new String[]{header});
-       // sort(results);
-        for(Results result : results)
-        csvData.add(new String[] {getResultToCSVFormat(result)});
+        // sort(results);
+        for (Results result : results)
+            csvData.add(new String[]{getResultToCSVFormat(result)});
 
 
         try (CSVWriter writer = new CSVWriter(new FileWriter(CSV_FILE_NAME))) {
             writer.writeAll(csvData, false);
         }
     }
+
     public String getResultToCSVFormat(Results result) {
-        return result.getGameDateFormated() + ";" + result.getHomeTeamId() + ";" + result.getHomeTeamName()  + ";" + result.getAwayTeamId() + ";" + result.getAwayTeamName() + ";" + result.getHomeTeamScore() + ";"+ result.getAwayTeamScore() + ";";
+        return result.getGameDateFormated() + ";" + result.getHomeTeamId() + ";" + result.getHomeTeamName() + ";" + result.getAwayTeamId() + ";" + result.getAwayTeamName() + ";" + result.getHomeTeamScore() + ";" + result.getAwayTeamScore();
 
     }
 
 
-
-    private static HashMap<String, String>  fetchTeamAndIds(HttpURLConnection conn) throws IOException {
+    private static HashMap<String, String> fetchTeamAndIds(HttpURLConnection conn) throws IOException {
         BufferedReader br = null;
         try {
             br = null;
@@ -157,10 +159,9 @@ public class Orchestrator {
             JSONObject jo = inputArray.getJSONObject(0);
             //System.out.println(jo);
             HashMap<String, String> teamsAndIds = new HashMap<>();
-            for(String keyStr : jo.keySet())
-            {
+            for (String keyStr : jo.keySet()) {
                 Object keyvalue = jo.get(keyStr);
-                if(keyStr.equals("response")) {
+                if (keyStr.equals("response")) {
                     result = keyvalue.toString();
                     break;
                 }
@@ -170,13 +171,13 @@ public class Orchestrator {
             JSONArray resultArray = new JSONArray(result);
             String id = "";
             String team = "";
-            for(int i = 0; i<resultArray.length() ;i++) {
+            for (int i = 0; i < resultArray.length(); i++) {
                 JSONObject resultObj = resultArray.getJSONObject(i);
                 for (String keyStr : resultObj.keySet()) {
                     Object keyvalue = resultObj.get(keyStr);
                     // System.out.println("key: " + keyStr + " value: " + keyvalue);
-                    String[] keyvalueString  = keyvalue.toString().split(",");
-                    if(keyStr.equals("venue")) {
+                    String[] keyvalueString = keyvalue.toString().split(",");
+                    if (keyStr.equals("venue")) {
                         for (int j = 0; j < keyvalueString.length; j++) {
                             //   System.out.println("keyvalueString[j]: " + keyvalueString[j] + " " + keyvalueString[j].toString());
                             if (keyvalueString[j].contains(idChar)) {
@@ -184,8 +185,7 @@ public class Orchestrator {
                                 //System.out.println("id: " + id);
                             }
                         }
-                    }
-                    else if(keyStr.equals("team")) {
+                    } else if (keyStr.equals("team")) {
                         for (int j = 0; j < keyvalueString.length; j++) {
                             // System.out.println("keyvalueString[j]: " + keyvalueString[j] + " " + keyvalueString[j].toString());
                             if (keyvalueString[j].contains(teamChar)) {
@@ -195,11 +195,10 @@ public class Orchestrator {
                         }
                     }
                 }
-                teamsAndIds.put(team,id);
+                teamsAndIds.put(team, id);
 
             }
-            if(teamsAndIds.size() == 0)
-            {
+            if (teamsAndIds.size() == 0) {
                 System.out.println("NOTHING TO SHOW");
             }
             return teamsAndIds;
@@ -214,14 +213,13 @@ public class Orchestrator {
 
 
         try {
-            String u = "https://api-football-v1.p.rapidapi.com/v3/teams?league=" + PREMIER_LEAGUE_ID +"&season=" + year.replace(".csv","");
+            String u = "https://api-football-v1.p.rapidapi.com/v3/teams?league=" + PREMIER_LEAGUE_ID + "&season=" + year.replace(".csv", "");
             URL url = new URL(u);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("X-RapidAPI-Host", "api-football-v1.p.rapidapi.com");
             conn.setRequestProperty("X-RapidAPI-Key", "9TW4PwlX6smsh65fadWDII0s5Eefp1E877cjsn62XI8AChow8z");
-
 
 
             conn.connect();
@@ -249,8 +247,8 @@ public class Orchestrator {
                 o2.getGameDate()));
     }
 
-    private boolean containsIgnoreCase(String str, String searchStr)     {
-        if(str == null || searchStr == null) return false;
+    private boolean containsIgnoreCase(String str, String searchStr) {
+        if (str == null || searchStr == null) return false;
 
         final int length = searchStr.length();
         if (length == 0)
