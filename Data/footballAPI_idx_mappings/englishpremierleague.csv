@@ -1,21 +1,39 @@
-HomeTeamName,HomeTeamid
-Arsenal,494
-Aston Villa,495
-Brentford,10503
-Brighton,508
-Burnley,512
-Chelsea,519
-Crystal Palace,525
-Everton,8560
-Leeds,546
-Leicester,547
-Liverpool,550
-Man City,555
-Man United,556
-Newcastle,562
-Norwich,565
-Southampton,585
-Tottenham,593
-Watford,596
-West Ham,598
-Wolves,600
+HomeTeamName,HomeTeamid,Div
+Arsenal,494,E0
+Aston Villa,495,E0
+Birmingham,12596,E0
+Blackburn,500,E0
+Blackpool,501,E0
+Bolton,502,E0
+Bournemouth,504,E0
+Brentford,10503,E0
+Brighton,508,E0
+Burnley,512,E0
+Cardiff,516,E0
+Chelsea,519,E0
+Crystal Palace,525,E0
+Everton,8560,E0
+Fulham,535,E0
+Huddersfield,543,E0
+Hull,12051,E0
+Leeds,546,E0
+Leicester,547,E0
+Liverpool,550,E0
+Man City,555,E0
+Man United,556,E0
+Middlesbrough,558,E0
+Newcastle,562,E0
+Norwich,565,E0
+QPR,18619,E0
+Reading,12052,E0
+Sheffield United,581,E0
+Southampton,585,E0
+Stoke,588,E0
+Sunderland,589,E0
+Swansea,12273,E0
+Tottenham,593,E0
+Watford,596,E0
+West Brom,597,E0
+West Ham,598,E0
+Wigan,599,E0
+Wolves,600,E0
