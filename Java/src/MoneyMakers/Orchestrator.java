@@ -19,23 +19,31 @@ import java.util.stream.Stream;
 public class Orchestrator {
 
     public static final int PREMIER_LEAGUE_ID = 39;
-    public static final String SEASON = "2021";
     public static final String idChar = '"' + "id" + '"';
     public static final String teamChar = '"' + "name" + '"';
-    public static final String CSV_FILE_NAME = "results.csv";
+    public static final String CSV_FILE_NAME = "football-data_wIndexes.csv";
     public static final String header = "Date;"+"HomeTeamid;"+"HomeTeamName;"+"AwayTeamId;"+"AwayTeamName;"+"HomeGoals;"+"AwayGoals;";
 
 
     public void start() throws IOException, ParseException {
-        HttpURLConnection con = OPENAPI();
-        HashMap<String, String> teamAndIds = fetchTeamAndIds(con);
-        ArrayList<Results> results = readCVSFile();
+        String years = readCVSFilesDates();
+        ArrayList<Results> results = new ArrayList<Results>();
+        HashMap<String, String> teamAndIds = new HashMap<String, String>();
+        String[] tmpString = years.split(";");
+        for(int i = 0; i < tmpString.length; i++) {
 
-        if (teamAndIds.size() != 0 && results.size() !=0){
-            sendToCSV(matchIdsAndTeams(teamAndIds, results));
+            results.addAll(getDataForYear(tmpString[i]));
+            HttpURLConnection con = OPENAPI(tmpString[i]);
+            HashMap<String, String> tmp = fetchTeamAndIds(con);
+            for (Map.Entry<String, String> entry : tmp.entrySet()) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                teamAndIds.put(key, value);
+            }
+            if (teamAndIds.size() != 0 && results.size() != 0) {
+                sendToCSV(matchIdsAndTeams(teamAndIds, results), tmpString[i]);
+            }
         }
-
-
 
     }
 
@@ -72,13 +80,30 @@ public class Orchestrator {
         ArrayList<Results> finalResults = new ArrayList<Results>();
         for(int i = 1; i < results.length; i++){
             String[] tmp = results[i].split(",");
-            finalResults.add(new Results(tmp[3],tmp[4],tmp[5],tmp[6],tmp[1]));
+            if(tmp.length >= 6)
+             finalResults.add(new Results(tmp[3],tmp[4],tmp[5],tmp[6],tmp[1]));
         }
         return finalResults;
     }
 
-    private ArrayList<Results> readCVSFile() throws FileNotFoundException, ParseException {
-        Scanner sc = new Scanner(new File("Premier League.csv"));
+    private String readCVSFilesDates() throws FileNotFoundException, ParseException {
+        File folder = new File("../Data/football-data/englishpremierleague/");
+        File[] listOfFiles = folder.listFiles();
+        String years = "";
+
+        for (int i = 0; i < listOfFiles.length; i++) {
+            if (listOfFiles[i].isFile()) {
+               // System.out.println("File " + listOfFiles[i].getName());
+                years += listOfFiles[i].getName() + ";";
+            } else if (listOfFiles[i].isDirectory()) {
+               // System.out.println("Directory " + listOfFiles[i].getName());
+            }
+        }
+        return years;
+    }
+
+    private ArrayList<Results> getDataForYear(String year) throws ParseException, FileNotFoundException {
+        Scanner sc = new Scanner(new File("../Data/football-data/englishpremierleague/" + year));
         //parsing a CSV file into the constructor of Scanner class
         sc.useDelimiter("\n");
         String file = "";
@@ -88,15 +113,16 @@ public class Orchestrator {
         }
 
         sc.close();
+      //  System.out.println(file);
         return getHomeTeamScores(file.split("\n"));
     }
 
 
 
-    private void sendToCSV(ArrayList<Results> results) throws IOException {
+    private void sendToCSV(ArrayList<Results> results, String year) throws IOException {
         List<String[]> csvData = new ArrayList<>();
         csvData.add(new String[]{header});
-        sort(results);
+       // sort(results);
         for(Results result : results)
         csvData.add(new String[] {getResultToCSVFormat(result)});
 
@@ -184,11 +210,11 @@ public class Orchestrator {
         }
     }
 
-    public static HttpURLConnection OPENAPI() throws IOException {
+    public static HttpURLConnection OPENAPI(String year) throws IOException {
 
 
         try {
-            String u = "https://api-football-v1.p.rapidapi.com/v3/teams?league=" + PREMIER_LEAGUE_ID +"&season=" + SEASON;
+            String u = "https://api-football-v1.p.rapidapi.com/v3/teams?league=" + PREMIER_LEAGUE_ID +"&season=" + year.replace(".csv","");
             URL url = new URL(u);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();

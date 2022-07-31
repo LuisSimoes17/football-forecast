@@ -1,26 +1,0 @@
-
-j	java:S116"URename this field "HomeTeamId" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(’¿Ùò
-i	java:S116	"URename this field "AwayTeamId" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ì”Ñi
-q	java:S116
-"WRename this field "HomeTeamName" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÿÅôÈşÿÿÿÿ
-q	java:S116"WRename this field "AwayTeamName" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ïÃ“©øÿÿÿÿ
-m	java:S116"XRename this field "HomeTeamScore" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ƒªä³
-m	java:S116"XRename this field "AwayTeamScore" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(™ÓØæ
-h	java:S116"SRename this field "GameDate" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ğÉò
-2
-java:S1116"Remove this empty statement.(½ÄÙä
-E
-java:S1656"/Remove or correct this useless self-assignment.(ÈŞĞ
-E
-java:S1656"/Remove or correct this useless self-assignment.(‹Š…à
-2
-java:S1116W"Remove this empty statement.(½ÄÙä
-a
-java:S1192"KDefine a constant instead of duplicating this literal "dd/MM/yyyy" 3 times.(½ÄÙä
-k	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Æ‚šÌûÿÿÿÿ
-k	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Æ‚šÌûÿÿÿÿ
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ûó€ß
-~
-java:S4165"hRemove this useless assignment; "HomeTeamId" already holds the assigned value along all execution paths.(ÈŞĞ
-~
-java:S4165"hRemove this useless assignment; "AwayTeamId" already holds the assigned value along all execution paths.(‹Š…à

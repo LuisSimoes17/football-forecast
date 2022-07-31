@@ -1,27 +1,0 @@
-
-p	java:S116	"VRename this field "HomeResults" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Èä·¬ûÿÿÿÿ
-p	java:S116
-"VRename this field "AwayResults" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ï‡Øüÿÿÿÿ
-M
-java:S1172"2Remove this unused method parameter "AwayResults".(ÓâÚ¼şÿÿÿÿ
-o
-java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(èù©÷
-n
-java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(·º¤2
-†
-java:S1319"kThe type of "HomeResults" should be an interface such as "List" rather than the implementation "ArrayList".(ÓâÚ¼şÿÿÿÿ
-†
-java:S1319"kThe type of "AwayResults" should be an interface such as "List" rather than the implementation "ArrayList".(ÓâÚ¼şÿÿÿÿ
-†
-java:S1319/"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(Áÿıœ
-
-java:S13193"kThe type of "homeResults" should be an interface such as "List" rather than the implementation "ArrayList".(ìµÔµ
-†
-java:S1319?"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(Ú¯ƒ„
-
-java:S1319C"kThe type of "awayResults" should be an interface such as "List" rather than the implementation "ArrayList".(Á„­
-k	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÓâÚ¼şÿÿÿÿ
-k	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÓâÚ¼şÿÿÿÿ
-7
-java:S1643J"Use a StringBuilder instead.(Àèî¤ÿÿÿÿÿ
-o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(Ûó€ß

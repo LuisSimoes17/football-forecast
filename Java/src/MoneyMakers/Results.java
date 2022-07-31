@@ -19,7 +19,19 @@ public class Results {
         AwayTeamName = awayTeamName;
         HomeTeamScore = homeTeamScore;
         AwayTeamScore = awayTeamScore;
-        GameDate = new SimpleDateFormat("dd/MM/yyyy").parse(gameDate);  ;
+        String[] dateTmp = gameDate.split("/");
+       // if(dateTmp.length == 1)
+            System.out.println(gameDate);
+        String day = dateTmp[0];
+        String month = dateTmp[1];
+        String year = "";
+        if(dateTmp[2].length() == 2)
+            year = "20" + dateTmp[2];
+        else
+            year = dateTmp[2];
+        String gameDateHammer = day + "/" + month + "/" + year;
+        if(!gameDateHammer.isEmpty())
+            GameDate = new SimpleDateFormat("dd/MM/yyyy").parse(gameDateHammer);
     }
 
     public Results(int HomeTeamId,int AwayTeamId, String homeTeamName, String awayTeamName, String homeTeamScore, String awayTeamScore) {
@@ -88,7 +100,12 @@ public class Results {
     }
 
     public String getGameDateFormated() {
+        if(GameDate != null){
+        //System.out.println("BATATA " + getAwayTeamScore() + getHomeTeamScore() +getAwayTeamName() +getHomeTeamName());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         return formatter.format(this.GameDate);
+        }
+        else
+            return "00/00/0000";
     }
 }
