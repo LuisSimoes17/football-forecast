@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 public class Orchestrator {
 
     public String header1 = "Date;" + "HomeTeamid;" + "HomeTeamName;" + "AwayTeamId;" + "AwayTeamName;" + "HomeGoals;" + "AwayGoals;";
-    public String header = "Date;" + "HomeTeamid;" + "HomeTeamName;" + "AwayTeamId;" + "AwayTeamName;" + "HomeGoals;" + "AwayGoals;"
+    public String header = "Season;" + "Date;" + "HomeTeamid;" + "HomeTeamName;" + "AwayTeamId;" + "AwayTeamName;" + "HomeGoals;" + "AwayGoals;"
             + "FullTimeResult;" + "AverageHomeWinOdd;" + "AverageDrawWinOdd;" + "AverageAwayWinOdd;" + "AvgOver2_5;" + "AvgUnder2_5;" + "Div";
     public static final int PREMIER_LEAGUE_ID = 39;
     public static final String idChar = '"' + "id" + '"';
@@ -96,18 +96,28 @@ Stoke -> Stoke City*/
 
         for (int i = 1; i < results.length; i++) {
             String[] tmp = results[i].split(",");
-
+            int season = getSeason(tmp[headers.indexOf("Date")]);
             if(headers.indexOf("Avg>2.5") > 0)
-            finalResults.add(new Results(tmp[headers.indexOf("Div")],tmp[headers.indexOf("HomeTeam")],tmp[headers.indexOf("AwayTeam")],tmp[headers.indexOf("Date")],tmp[headers.indexOf("FTHG")],
+            finalResults.add(new Results(tmp[headers.indexOf("Div")],season,tmp[headers.indexOf("HomeTeam")],tmp[headers.indexOf("AwayTeam")],tmp[headers.indexOf("Date")],tmp[headers.indexOf("FTHG")],
                     tmp[headers.indexOf("FTAG")],tmp[headers.indexOf("FTR")],tmp[headers.indexOf("AvgH")],tmp[headers.indexOf("AvgD")],
                     tmp[headers.indexOf("AvgA")],tmp[headers.indexOf("Avg>2.5")],tmp[headers.indexOf("Avg<2.5")]));
             else
-                finalResults.add(new Results(tmp[headers.indexOf("Div")],tmp[headers.indexOf("HomeTeam")],tmp[headers.indexOf("AwayTeam")],tmp[headers.indexOf("Date")],tmp[headers.indexOf("FTHG")],
+                finalResults.add(new Results(tmp[headers.indexOf("Div")],season,tmp[headers.indexOf("HomeTeam")],tmp[headers.indexOf("AwayTeam")],tmp[headers.indexOf("Date")],tmp[headers.indexOf("FTHG")],
                         tmp[headers.indexOf("FTAG")],tmp[headers.indexOf("FTR")],tmp[headers.indexOf("B365H")],tmp[headers.indexOf("B365D")],
                         tmp[headers.indexOf("B365A")],tmp[headers.indexOf("BbAv>2.5")],tmp[headers.indexOf("BbAv<2.5")]));
 
         }
         return finalResults;
+    }
+
+    private int getSeason(String date) {
+      //  14/08/10
+        int month = Integer.parseInt(date.split("/")[1].replaceAll("0",""));
+        int year = Integer.parseInt(date.split("/")[2].replaceAll("0",""));
+        if(month>7)
+            return year;
+        else
+            return  year -1;
     }
 
     private String readCVSFilesDates() throws FileNotFoundException, ParseException {
@@ -156,7 +166,7 @@ Stoke -> Stoke City*/
     }
 
     public String getResultToCSVFormat(Results result) {
-        return result.getGameDateFormated() + ";" + result.getHomeTeamId() + ";" + result.getHomeTeamName() + ";" + result.getAwayTeamId() + ";" + result.getAwayTeamName() + ";" + result.getFull_Time_Home_Team_Goals() + ";" + result.getFull_Time_Away_Team_Goals() + ";"
+        return result.getSeason() + ";" + result.getGameDateFormated() + ";" + result.getHomeTeamId() + ";" + result.getHomeTeamName() + ";" + result.getAwayTeamId() + ";" + result.getAwayTeamName() + ";" + result.getFull_Time_Home_Team_Goals() + ";" + result.getFull_Time_Away_Team_Goals() + ";"
                 + result.getFull_Time_Result() + ";" + result.getMarket_average_home_win_odds() + ";" + result.getMarket_average_draw_win_odds() + ";" + result.getMarket_average_away_win_odds() + ";" + result.getMarket_average_over_2_5_goals() + ";"
                 + result.getMarket_average_under_2_5_goals() + ";" + PREMIER_LEAGUE_ID + ";" ;
     }

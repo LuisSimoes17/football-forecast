@@ -7,6 +7,7 @@ import java.util.Date;
 public class Results {
 
     private String Division;
+    private int season;
     private int HomeTeamId;
     private int AwayTeamId;
     private String HomeTeamName;
@@ -21,7 +22,33 @@ public class Results {
     private String Market_average_over_2_5_goals;
     private String Market_average_under_2_5_goals;
 
-
+    public Results(String division, int season, String homeTeamName, String awayTeamName, String gameDate, String full_Time_Home_Team_Goals, String full_Time_Away_Team_Goals, String full_Time_Result, String market_average_home_win_odds, String market_average_draw_win_odds, String market_average_away_win_odds, String market_average_over_2_5_goals, String market_average_under_2_5_goals) throws ParseException {
+      /*  HomeTeamId = homeTeamId;
+        AwayTeamId = awayTeamId;*/
+        this.season = season;
+        Division = division;
+        HomeTeamName = homeTeamName;
+        AwayTeamName = awayTeamName;
+        Full_Time_Home_Team_Goals = full_Time_Home_Team_Goals;
+        Full_Time_Away_Team_Goals = full_Time_Away_Team_Goals;
+        Full_Time_Result = full_Time_Result;
+        Market_average_home_win_odds = market_average_home_win_odds;
+        Market_average_draw_win_odds = market_average_draw_win_odds;
+        Market_average_away_win_odds = market_average_away_win_odds;
+        Market_average_over_2_5_goals = market_average_over_2_5_goals;
+        Market_average_under_2_5_goals = market_average_under_2_5_goals;
+        String[] dateTmp = gameDate.split("/");
+        String day = dateTmp[0];
+        String month = dateTmp[1];
+        String year = "";
+        if(dateTmp[2].length() == 2)
+            year = "20" + dateTmp[2];
+        else
+            year = dateTmp[2];
+        String gameDateHammer = day + "/" + month + "/" + year;
+        if(!gameDateHammer.isEmpty())
+            GameDate = new SimpleDateFormat("dd/MM/yyyy").parse(gameDateHammer);
+    }
 
     public Results(String division, String homeTeamName, String awayTeamName, String gameDate, String full_Time_Home_Team_Goals, String full_Time_Away_Team_Goals, String full_Time_Result, String market_average_home_win_odds, String market_average_draw_win_odds, String market_average_away_win_odds, String market_average_over_2_5_goals, String market_average_under_2_5_goals) throws ParseException {
       /*  HomeTeamId = homeTeamId;
@@ -180,6 +207,14 @@ public class Results {
 
     public void setMarket_average_under_2_5_goals(String market_average_under_2_5_goals) {
         Market_average_under_2_5_goals = market_average_under_2_5_goals;
+    }
+
+    public int getSeason() {
+        return season;
+    }
+
+    public void setSeason(int season) {
+        this.season = season;
     }
 
     public String getDivision() {
