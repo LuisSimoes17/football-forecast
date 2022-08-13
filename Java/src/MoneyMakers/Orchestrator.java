@@ -158,7 +158,7 @@ Stoke -> Stoke City*/
     public String getResultToCSVFormat(Results result) {
         return result.getGameDateFormated() + ";" + result.getHomeTeamId() + ";" + result.getHomeTeamName() + ";" + result.getAwayTeamId() + ";" + result.getAwayTeamName() + ";" + result.getFull_Time_Home_Team_Goals() + ";" + result.getFull_Time_Away_Team_Goals() + ";"
                 + result.getFull_Time_Result() + ";" + result.getMarket_average_home_win_odds() + ";" + result.getMarket_average_draw_win_odds() + ";" + result.getMarket_average_away_win_odds() + ";" + result.getMarket_average_over_2_5_goals() + ";"
-                + result.getMarket_average_under_2_5_goals() + ";" + result.getDivision() + ";" ;
+                + result.getMarket_average_under_2_5_goals() + ";" + PREMIER_LEAGUE_ID + ";" ;
     }
 
 
@@ -188,7 +188,7 @@ Stoke -> Stoke City*/
                     break;
                 }
             }
-            //  System.out.println(result);
+              //System.out.println(result);
 
             JSONArray resultArray = new JSONArray(result);
             String id = "";
@@ -199,20 +199,17 @@ Stoke -> Stoke City*/
                     Object keyvalue = resultObj.get(keyStr);
                     // System.out.println("key: " + keyStr + " value: " + keyvalue);
                     String[] keyvalueString = keyvalue.toString().split(",");
-                    if (keyStr.equals("venue")) {
-                        for (int j = 0; j < keyvalueString.length; j++) {
-                            //   System.out.println("keyvalueString[j]: " + keyvalueString[j] + " " + keyvalueString[j].toString());
-                            if (keyvalueString[j].contains(idChar)) {
-                                id = keyvalueString[j].split(":")[1];
-                                //System.out.println("id: " + id);
-                            }
-                        }
-                    } else if (keyStr.equals("team")) {
+                    if (keyStr.equals("team")) {
+                        //System.out.println("keyStr " + keyStr);
                         for (int j = 0; j < keyvalueString.length; j++) {
                             // System.out.println("keyvalueString[j]: " + keyvalueString[j] + " " + keyvalueString[j].toString());
                             if (keyvalueString[j].contains(teamChar)) {
                                 team = keyvalueString[j].split(":")[1];
                                 // System.out.println("team: " + team);
+                            }
+                            if (keyvalueString[j].contains(idChar)) {
+                                id = keyvalueString[j].split(":")[1].replaceAll("\"", "").replaceAll("}","");
+                                //System.out.println("id: " + id);
                             }
                         }
                     }
@@ -235,13 +232,15 @@ Stoke -> Stoke City*/
 
 
         try {
-            String u = "https://api-football-v1.p.rapidapi.com/v3/teams?league=" + PREMIER_LEAGUE_ID + "&season=" + year.replace(".csv", "");
+            System.out.println("waiting 10 seconds");
+            Thread.sleep(6000);
+            String u = "https://v3.football.api-sports.io/teams?league=" + PREMIER_LEAGUE_ID + "&season=" + year.replace(".csv", "");
             URL url = new URL(u);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setRequestProperty("X-RapidAPI-Host", "api-football-v1.p.rapidapi.com");
-            conn.setRequestProperty("X-RapidAPI-Key", "9TW4PwlX6smsh65fadWDII0s5Eefp1E877cjsn62XI8AChow8z");
+            conn.setRequestProperty("X-RapidAPI-Host", "v3.football.api-sports.io");
+            conn.setRequestProperty("X-RapidAPI-Key", "15f514ec0209e0f49397240d5e166bd9");
 
 
             conn.connect();
