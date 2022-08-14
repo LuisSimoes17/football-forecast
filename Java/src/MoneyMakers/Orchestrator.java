@@ -37,7 +37,7 @@ public class Orchestrator {
 
             results.addAll(getDataForYear(tmpString[i]));
             HttpURLConnection con = OPENAPI(tmpString[i]);
-            HashMap<String, String> tmp = fetchTeamAndIds(con);
+            HashMap<String, String> tmp = fetchTeamAndIds(con,tmpString[i]);
             for (Map.Entry<String, String> entry : tmp.entrySet()) {
                 String key = entry.getKey();
                 String value = entry.getValue();
@@ -89,35 +89,24 @@ public class Orchestrator {
 Sheffield United -> Sheffield Utd
 Stoke -> Stoke City*/
 
-    private ArrayList<Results> getHomeTeamScores(String[] results) throws ParseException {
+    private ArrayList<Results> getHomeTeamScores(String[] results, String year) throws ParseException {
         // row 0 -> headers, não interessa para aqui
         ArrayList<Results> finalResults = new ArrayList<Results>();
         ArrayList<String> headers = new ArrayList<String>(Arrays.asList(results[0].split(",")));
 
         for (int i = 1; i < results.length; i++) {
             String[] tmp = results[i].split(",");
-            int season = getSeason(tmp[headers.indexOf("Date")]);
             if(headers.indexOf("Avg>2.5") > 0)
-            finalResults.add(new Results(tmp[headers.indexOf("Div")],season,tmp[headers.indexOf("HomeTeam")],tmp[headers.indexOf("AwayTeam")],tmp[headers.indexOf("Date")],tmp[headers.indexOf("FTHG")],
+            finalResults.add(new Results(tmp[headers.indexOf("Div")],year.replaceAll(".csv", ""),tmp[headers.indexOf("HomeTeam")],tmp[headers.indexOf("AwayTeam")],tmp[headers.indexOf("Date")],tmp[headers.indexOf("FTHG")],
                     tmp[headers.indexOf("FTAG")],tmp[headers.indexOf("FTR")],tmp[headers.indexOf("AvgH")],tmp[headers.indexOf("AvgD")],
                     tmp[headers.indexOf("AvgA")],tmp[headers.indexOf("Avg>2.5")],tmp[headers.indexOf("Avg<2.5")]));
             else
-                finalResults.add(new Results(tmp[headers.indexOf("Div")],season,tmp[headers.indexOf("HomeTeam")],tmp[headers.indexOf("AwayTeam")],tmp[headers.indexOf("Date")],tmp[headers.indexOf("FTHG")],
+                finalResults.add(new Results(tmp[headers.indexOf("Div")],year.replaceAll(".csv", ""),tmp[headers.indexOf("HomeTeam")],tmp[headers.indexOf("AwayTeam")],tmp[headers.indexOf("Date")],tmp[headers.indexOf("FTHG")],
                         tmp[headers.indexOf("FTAG")],tmp[headers.indexOf("FTR")],tmp[headers.indexOf("B365H")],tmp[headers.indexOf("B365D")],
                         tmp[headers.indexOf("B365A")],tmp[headers.indexOf("BbAv>2.5")],tmp[headers.indexOf("BbAv<2.5")]));
 
         }
         return finalResults;
-    }
-
-    private int getSeason(String date) {
-      //  14/08/10
-        int month = Integer.parseInt(date.split("/")[1].replaceAll("0",""));
-        int year = Integer.parseInt(date.split("/")[2].replaceAll("0",""));
-        if(month>7)
-            return year;
-        else
-            return  year -1;
     }
 
     private String readCVSFilesDates() throws FileNotFoundException, ParseException {
@@ -148,7 +137,7 @@ Stoke -> Stoke City*/
 
         sc.close();
         //  System.out.println(file);
-        return getHomeTeamScores(file.split("\n"));
+        return getHomeTeamScores(file.split("\n"), year);
     }
 
 
@@ -172,7 +161,7 @@ Stoke -> Stoke City*/
     }
 
 
-    private static HashMap<String, String> fetchTeamAndIds(HttpURLConnection conn) throws IOException {
+    private static HashMap<String, String> fetchTeamAndIds(HttpURLConnection conn, String season) throws IOException {
         BufferedReader br = null;
         try {
             br = null;
@@ -242,7 +231,7 @@ Stoke -> Stoke City*/
 
 
         try {
-            System.out.println("waiting 10 seconds");
+            System.out.println("waiting 6 seconds");
             Thread.sleep(6000);
             String u = "https://v3.football.api-sports.io/teams?league=" + PREMIER_LEAGUE_ID + "&season=" + year.replace(".csv", "");
             URL url = new URL(u);

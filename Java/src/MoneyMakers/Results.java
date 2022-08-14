@@ -7,7 +7,7 @@ import java.util.Date;
 public class Results {
 
     private String Division;
-    private int season;
+    private String season;
     private int HomeTeamId;
     private int AwayTeamId;
     private String HomeTeamName;
@@ -22,7 +22,7 @@ public class Results {
     private String Market_average_over_2_5_goals;
     private String Market_average_under_2_5_goals;
 
-    public Results(String division, int season, String homeTeamName, String awayTeamName, String gameDate, String full_Time_Home_Team_Goals, String full_Time_Away_Team_Goals, String full_Time_Result, String market_average_home_win_odds, String market_average_draw_win_odds, String market_average_away_win_odds, String market_average_over_2_5_goals, String market_average_under_2_5_goals) throws ParseException {
+    public Results(String division, String season, String homeTeamName, String awayTeamName, String gameDate, String full_Time_Home_Team_Goals, String full_Time_Away_Team_Goals, String full_Time_Result, String market_average_home_win_odds, String market_average_draw_win_odds, String market_average_away_win_odds, String market_average_over_2_5_goals, String market_average_under_2_5_goals) throws ParseException {
       /*  HomeTeamId = homeTeamId;
         AwayTeamId = awayTeamId;*/
         this.season = season;
@@ -209,11 +209,11 @@ public class Results {
         Market_average_under_2_5_goals = market_average_under_2_5_goals;
     }
 
-    public int getSeason() {
+    public String getSeason() {
         return season;
     }
 
-    public void setSeason(int season) {
+    public void setSeason(String season) {
         this.season = season;
     }
 
