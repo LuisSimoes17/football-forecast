@@ -23,8 +23,7 @@ public class Results {
     private String Market_average_under_2_5_goals;
 
     public Results(String division, String season, String homeTeamName, String awayTeamName, String gameDate, String full_Time_Home_Team_Goals, String full_Time_Away_Team_Goals, String full_Time_Result, String market_average_home_win_odds, String market_average_draw_win_odds, String market_average_away_win_odds, String market_average_over_2_5_goals, String market_average_under_2_5_goals) throws ParseException {
-      /*  HomeTeamId = homeTeamId;
-        AwayTeamId = awayTeamId;*/
+        System.out.println("gameDate: " + gameDate);
         this.season = season;
         Division = division;
         HomeTeamName = homeTeamName;
@@ -37,17 +36,22 @@ public class Results {
         Market_average_away_win_odds = market_average_away_win_odds;
         Market_average_over_2_5_goals = market_average_over_2_5_goals;
         Market_average_under_2_5_goals = market_average_under_2_5_goals;
-        String[] dateTmp = gameDate.split("/");
-        String day = dateTmp[0];
-        String month = dateTmp[1];
-        String year = "";
-        if(dateTmp[2].length() == 2)
-            year = "20" + dateTmp[2];
-        else
-            year = dateTmp[2];
-        String gameDateHammer = day + "/" + month + "/" + year;
-        if(!gameDateHammer.isEmpty())
-            GameDate = new SimpleDateFormat("dd/MM/yyyy").parse(gameDateHammer);
+        if(gameDate.isEmpty() || gameDate == null)
+            GameDate = null;
+        else{
+            String[] dateTmp = gameDate.split("/");
+            String day = dateTmp[0];
+            String month = dateTmp[1];
+            String year = "";
+            if (dateTmp[2].length() == 2)
+                year = "20" + dateTmp[2];
+            else
+                year = dateTmp[2];
+            String gameDateHammer = day + "/" + month + "/" + year;
+            if (!gameDateHammer.isEmpty())
+                GameDate = new SimpleDateFormat("dd/MM/yyyy").parse(gameDateHammer);
+        }
+
     }
 
     public Results(String division, String homeTeamName, String awayTeamName, String gameDate, String full_Time_Home_Team_Goals, String full_Time_Away_Team_Goals, String full_Time_Result, String market_average_home_win_odds, String market_average_draw_win_odds, String market_average_away_win_odds, String market_average_over_2_5_goals, String market_average_under_2_5_goals) throws ParseException {

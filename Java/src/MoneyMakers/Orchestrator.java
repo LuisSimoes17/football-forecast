@@ -18,24 +18,27 @@ import java.util.stream.Stream;
 
 public class Orchestrator {
 
-    public String header1 = "Date;" + "HomeTeamid;" + "HomeTeamName;" + "AwayTeamId;" + "AwayTeamName;" + "HomeGoals;" + "AwayGoals;";
-    public String header = "Season;" + "Date;" + "HomeTeamid;" + "HomeTeamName;" + "AwayTeamId;" + "AwayTeamName;" + "HomeGoals;" + "AwayGoals;"
+    private String header1 = "Date;" + "HomeTeamid;" + "HomeTeamName;" + "AwayTeamId;" + "AwayTeamName;" + "HomeGoals;" + "AwayGoals;";
+    private String header = "Season;" + "Date;" + "HomeTeamid;" + "HomeTeamName;" + "AwayTeamId;" + "AwayTeamName;" + "HomeGoals;" + "AwayGoals;"
             + "FullTimeResult;" + "AverageHomeWinOdd;" + "AverageDrawWinOdd;" + "AverageAwayWinOdd;" + "AvgOver2_5;" + "AvgUnder2_5;" + "Div";
-    public static final int PREMIER_LEAGUE_ID = 39;
-    public static final String idChar = '"' + "id" + '"';
-    public static final String teamChar = '"' + "name" + '"';
-    public static final String CSV_FILE_NAME = "football-data_wIndexes.csv";
+    private static final String idChar = '"' + "id" + '"';
+    private static final String teamChar = '"' + "name" + '"';
+    private static final String FilePath = "files/";
+    private String CSV_FILE_NAME ;
+    private int LeagueId ;
 
 
 
-    public void start() throws IOException, ParseException {
-        String years = readCVSFilesDates();
+    public void start(int id, String years, String filename, String path) throws IOException, ParseException {
+        this.CSV_FILE_NAME = filename + ".csv";
+        this.LeagueId = id;
+        System.out.println("LeagueId: " + LeagueId + " filename:" + CSV_FILE_NAME + " years: " + years);
         ArrayList<Results> results = new ArrayList<Results>();
         HashMap<String, String> teamAndIds = new HashMap<String, String>();
         String[] tmpString = years.split(";");
         for (int i = 0; i < tmpString.length; i++) {
 
-            results.addAll(getDataForYear(tmpString[i]));
+            results.addAll(getDataForYear(tmpString[i], path));
             HttpURLConnection con = OPENAPI(tmpString[i]);
             HashMap<String, String> tmp = fetchTeamAndIds(con,tmpString[i]);
             for (Map.Entry<String, String> entry : tmp.entrySet()) {
@@ -47,7 +50,7 @@ public class Orchestrator {
                 sendToCSV(matchIdsAndTeams(teamAndIds, results), tmpString[i]);
             }
         }
-
+        System.out.println("Created file " + CSV_FILE_NAME);
     }
 
     private ArrayList<Results> matchIdsAndTeams(HashMap<String, String> teamAndIds, ArrayList<Results> results) {
@@ -110,7 +113,7 @@ Stoke -> Stoke City*/
     }
 
     private String readCVSFilesDates() throws FileNotFoundException, ParseException {
-        File folder = new File("../Data/football-data/englishpremierleague/");
+        File folder = new File("../Data/football-data/England/englishpremierleague/");
         File[] listOfFiles = folder.listFiles();
         String years = "";
 
@@ -125,8 +128,8 @@ Stoke -> Stoke City*/
         return years;
     }
 
-    private ArrayList<Results> getDataForYear(String year) throws ParseException, FileNotFoundException {
-        Scanner sc = new Scanner(new File("../Data/football-data/englishpremierleague/" + year));
+    private ArrayList<Results> getDataForYear(String year, String path) throws ParseException, FileNotFoundException {
+        Scanner sc = new Scanner(new File(path + year));
         //parsing a CSV file into the constructor of Scanner class
         sc.useDelimiter("\n");
         String file = "";
@@ -149,7 +152,7 @@ Stoke -> Stoke City*/
             csvData.add(new String[]{getResultToCSVFormat(result)});
 
 
-        try (CSVWriter writer = new CSVWriter(new FileWriter(CSV_FILE_NAME))) {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(new File(FilePath,CSV_FILE_NAME)))) {
             writer.writeAll(csvData, false);
         }
     }
@@ -157,7 +160,7 @@ Stoke -> Stoke City*/
     public String getResultToCSVFormat(Results result) {
         return result.getSeason() + ";" + result.getGameDateFormated() + ";" + result.getHomeTeamId() + ";" + result.getHomeTeamName() + ";" + result.getAwayTeamId() + ";" + result.getAwayTeamName() + ";" + result.getFull_Time_Home_Team_Goals() + ";" + result.getFull_Time_Away_Team_Goals() + ";"
                 + result.getFull_Time_Result() + ";" + result.getMarket_average_home_win_odds() + ";" + result.getMarket_average_draw_win_odds() + ";" + result.getMarket_average_away_win_odds() + ";" + result.getMarket_average_over_2_5_goals() + ";"
-                + result.getMarket_average_under_2_5_goals() + ";" + PREMIER_LEAGUE_ID + ";" ;
+                + result.getMarket_average_under_2_5_goals() + ";" + LeagueId + ";" ;
     }
 
 
@@ -227,13 +230,12 @@ Stoke -> Stoke City*/
         }
     }
 
-    public static HttpURLConnection OPENAPI(String year) throws IOException {
-
+    public void GetLeagues() throws IOException {
 
         try {
-            System.out.println("waiting 6 seconds");
-            Thread.sleep(6000);
-            String u = "https://v3.football.api-sports.io/teams?league=" + PREMIER_LEAGUE_ID + "&season=" + year.replace(".csv", "");
+            //System.out.println("waiting 6 seconds");
+            //Thread.sleep(6000);
+            String u = "https://v3.football.api-sports.io/leagues";
             URL url = new URL(u);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -250,8 +252,49 @@ Stoke -> Stoke City*/
             if (responseCode != 200) {
                 System.out.println("ERROR, HttpResponseCode:" + responseCode);
                 throw new RuntimeException("HttpResponseCode: " + responseCode);
-            } else {
+            }
+            else {
+                BufferedReader br = null;
+                br = null;
+                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String strCurrentLine;
+                String result = "[";
+                while ((strCurrentLine = br.readLine()) != null) {
+                    result += strCurrentLine;
+                }
+                result += "]";
+                CreateFile(result);
+            }
+            return ;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ;
+        }
 
+    }
+
+    public  HttpURLConnection OPENAPI(String year) throws IOException {
+
+        try {
+         //   System.out.println("waiting 6 seconds so the number of requests don't surpass the 10 request per minute");
+            //Thread.sleep(6000);
+            String u = "https://v3.football.api-sports.io/teams?league=" + LeagueId + "&season=" + year.replace(".csv", "");
+            URL url = new URL(u);
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("X-RapidAPI-Host", "v3.football.api-sports.io");
+            conn.setRequestProperty("X-RapidAPI-Key", "15f514ec0209e0f49397240d5e166bd9");
+
+
+            conn.connect();
+
+            //Check if connect is made
+            int responseCode = conn.getResponseCode();
+            // 200 OK
+            if (responseCode != 200) {
+                System.out.println("ERROR, HttpResponseCode:" + responseCode);
+                throw new RuntimeException("HttpResponseCode: " + responseCode);
             }
             return conn;
         } catch (Exception e) {
@@ -281,9 +324,14 @@ Stoke -> Stoke City*/
         return false;
     }
 
-  /*  private static void CreateFile(String info) {
+    private static void CreateFile(String info) {
         try {
-            File myObj = new File("filename.txt");
+            File myObj = new File("Test.txt");
+            if(!myObj.exists()){
+                myObj.createNewFile();
+            }else{
+                System.out.println("File already exists");
+            }
             if (myObj.createNewFile()) {
                 myObj.delete();
                 myObj = new File("filename.txt");
@@ -295,7 +343,7 @@ Stoke -> Stoke City*/
         }
 
         return ;
-    }*/
+    }
 
 
 }

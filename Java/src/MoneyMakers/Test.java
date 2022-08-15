@@ -7,8 +7,10 @@ public class Test {
 
     public static void main(String[] args) throws IOException, ParseException {
         System.out.println("Start extracting");
-        Orchestrator orchestrator = new Orchestrator();
-        orchestrator.start();
+        General general = new General();
+        general.start();
+        /*OrchestratorFromAPI orchestratorFromAPI = new OrchestratorFromAPI();
+        orchestrator.start();*/
         System.out.println("Done");
     }
 
