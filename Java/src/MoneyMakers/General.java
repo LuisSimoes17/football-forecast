@@ -26,14 +26,13 @@ public class General {
                     //System.out.println("Found file " + listOfFiles[i].getName());
                     years += listOfFiles[i].getName() + ";";
                 } else if (listOfFiles[i].isDirectory()) {
-                    System.out.println("Entering Directory " + listOfFiles[i].getName());
                     readCVSFilesDates(path + "/" + listOfFiles[i].getName() + "/", listOfFiles[i].getName());
                 }
             }
             int id = leagueIds.getLeagueIds(dirName);
             path = path.replace("//", "/");
             if(id != 0){
-                //System.out.println("Calling orchestrator with id = " + id + " and years = " + years + ", filename is going to be " + dirName + " path" + path);
+                System.out.println("Calling orchestrator with id = " + id + " and years = " + years + ", filename is going to be " + dirName + " path" + path);
                 orchestrator.start(id,years, dirName, path);
             }
             else {

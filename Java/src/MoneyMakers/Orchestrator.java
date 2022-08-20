@@ -32,7 +32,7 @@ public class Orchestrator {
     public void start(int id, String years, String filename, String path) throws IOException, ParseException {
         this.CSV_FILE_NAME = filename + ".csv";
         this.LeagueId = id;
-        System.out.println("LeagueId: " + LeagueId + " filename:" + CSV_FILE_NAME + " years: " + years);
+        //System.out.println("LeagueId: " + LeagueId + " filename:" + CSV_FILE_NAME + " years: " + years);
         ArrayList<Results> results = new ArrayList<Results>();
         HashMap<String, String> teamAndIds = new HashMap<String, String>();
         String[] tmpString = years.split(";");
@@ -57,59 +57,137 @@ public class Orchestrator {
 
         ArrayList<TeamData> teamsData = new ArrayList<TeamData>();
 
+
         for (String name : teamAndIds.keySet()) {
             String key = name.toString().replaceAll("\"", "");
             String value = teamAndIds.get(name).toString().replaceAll("\"", "");
             teamsData.add(new TeamData(value, key));
         }
+        /*for (TeamData team : teamsData) {
+            System.out.println("team.getName(): " + team.getName());
+        }*/
+        for (Results result : results) {
+            System.out.println("result.getHomeTeamName(): " + result.getHomeTeamName());
+        }
         for (Results result : results) {
             for (TeamData team : teamsData) {
-               /* System.out.println(result.getHomeTeamName());
-                System.out.println(result.getAwayTeamName());*/
-                if (result.getHomeTeamName().equalsIgnoreCase(team.getName()) ||
-                        (result.getHomeTeamName().equalsIgnoreCase("MAN CITY") && team.getName().equalsIgnoreCase("MANCHESTER CITY")) ||
-                        (result.getHomeTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED"))||
-                        (result.getHomeTeamName().equalsIgnoreCase("Hull") && team.getName().equalsIgnoreCase("Hull City")) ||
-                        (result.getHomeTeamName().equalsIgnoreCase("Sheffield United") && team.getName().equalsIgnoreCase("Sheffield Utd")) ||
-                        (result.getHomeTeamName().equalsIgnoreCase("Stoke") && team.getName().equalsIgnoreCase("Stoke City"))) {
-                    team.addHomeResults(result);
+                if (result.getHomeTeamName().equalsIgnoreCase(team.getName())) {
                     result.setHomeTeamId(team.getId());
+                    team.addHomeResults(result);
+                    break;
                 }
-                if (result.getAwayTeamName().equalsIgnoreCase(team.getName()) ||
-                        (result.getAwayTeamName().equalsIgnoreCase("MAN CITY") && team.getName().equalsIgnoreCase("MANCHESTER CITY")) ||
-                        (result.getAwayTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED")) ||
-                        (result.getAwayTeamName().equalsIgnoreCase("Hull") && team.getName().equalsIgnoreCase("Hull City")) ||
-                        (result.getAwayTeamName().equalsIgnoreCase("Sheffield United") && team.getName().equalsIgnoreCase("Sheffield Utd")) ||
-                        (result.getAwayTeamName().equalsIgnoreCase("Stoke") && team.getName().equalsIgnoreCase("Stoke City"))) {
-                    team.addAwayResults(result);
+               /* else
+                    System.out.println("result.getHomeTeamName(): " + result.getHomeTeamName() + " team.getName() " + team.getName());*/
+                if (result.getAwayTeamName().equalsIgnoreCase(team.getName())) {
                     result.setAwayTeamId(team.getId());
+                    team.addAwayResults(result);
+                    break;
                 }
+             /*   else
+                    System.out.println("result.getAwayTeamName(): " + result.getAwayTeamName() + " team.getName() " + team.getName());*/
             }
         }
+        teamNameHammerHome(results,teamsData);
+        teamNameHammerAway(results,teamsData);
         return results;
     }
-    /*Hull -> Hull City
-Sheffield United -> Sheffield Utd
-Stoke -> Stoke City*/
+
+
+    private void teamNameHammerHome(ArrayList<Results> results, ArrayList<TeamData> teamsData) {
+        for (Results result : results) {
+            if (result.homeTeamsWithId0())
+                for (TeamData team : teamsData) {
+                    if (result.getHomeTeamName().equalsIgnoreCase(team.getName()) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("MAN CITY") && team.getName().equalsIgnoreCase("MANCHESTER CITY")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("HULL CITY") && team.getName().equalsIgnoreCase("HULL")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("SHEFFIELD UTD") && team.getName().equalsIgnoreCase("SHEFFIELD UNITED")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("STOKE CITY") && team.getName().equalsIgnoreCase("STOKE")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("Beerschot VA") && team.getName().equalsIgnoreCase("BEERSCHOT WILRIJK")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("BERGEN") && team.getName().equalsIgnoreCase("MONS")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("CLUB BRUGGE") && team.getName().equalsIgnoreCase("Club Brugge KV")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("Eupen") && team.getName().equalsIgnoreCase("AS Eupen")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("GERMINAL") && team.getName().equalsIgnoreCase("Beerschot")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("MECHELEN") && team.getName().equalsIgnoreCase("KV MECHELEN")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("MOUSCRON") && team.getName().equalsIgnoreCase("ROYAL EXCEL MOUSCRON")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("MOUSCRON-PERUWELZ") && team.getName().equalsIgnoreCase("RWDM")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("OUD-HEVERLEE LEUVEN") && team.getName().equalsIgnoreCase("OH LEUVEN")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("SERAING") && team.getName().equalsIgnoreCase("Seraing United")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("ST TRUIDEN") && team.getName().equalsIgnoreCase("St. Truiden")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("ST. GILLOISE") && team.getName().equalsIgnoreCase("UNION ST. GILLOISE")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("STANDARD") && team.getName().equalsIgnoreCase("STANDARD LIEGE")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("WAREGEM") && team.getName().equalsIgnoreCase("ZULTE WAREGEM")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("Westerlo") && team.getName().equalsIgnoreCase("KVC Westerlo"))) {
+                        result.setHomeTeamId(team.getId());
+                        team.addHomeResults(result);
+                        break;
+                    }
+                }
+        }
+    }
+
+    private void teamNameHammerAway(ArrayList<Results> results, ArrayList<TeamData> teamsData) {
+        for (Results result : results) {
+            if (result.awayTeamsWithId0())
+                for (TeamData team : teamsData) {
+                    if (result.getAwayTeamName().equalsIgnoreCase(team.getName()) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("MAN CITY") && team.getName().equalsIgnoreCase("MANCHESTER CITY")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("HULL CITY") && team.getName().equalsIgnoreCase("HULL")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("SHEFFIELD UTD") && team.getName().equalsIgnoreCase("SHEFFIELD UNITED")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("STOKE CITY") && team.getName().equalsIgnoreCase("STOKE")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("Beerschot VA") && team.getName().equalsIgnoreCase("BEERSCHOT WILRIJK")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("BERGEN") && team.getName().equalsIgnoreCase("MONS")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("CLUB BRUGGE") && team.getName().equalsIgnoreCase("Club Brugge KV")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("Eupen") && team.getName().equalsIgnoreCase("AS Eupen")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("GERMINAL") && team.getName().equalsIgnoreCase("Beerschot")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("MECHELEN") && team.getName().equalsIgnoreCase("KV MECHELEN")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("MOUSCRON") && team.getName().equalsIgnoreCase("ROYAL EXCEL MOUSCRON")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("MOUSCRON-PERUWELZ") && team.getName().equalsIgnoreCase("RWDM")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("OUD-HEVERLEE LEUVEN") && team.getName().equalsIgnoreCase("OH LEUVEN")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("SERAING") && team.getName().equalsIgnoreCase("Seraing United")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("ST TRUIDEN") && team.getName().equalsIgnoreCase("St. Truiden")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("ST. GILLOISE") && team.getName().equalsIgnoreCase("UNION ST. GILLOISE")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("STANDARD") && team.getName().equalsIgnoreCase("STANDARD LIEGE")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("WAREGEM") && team.getName().equalsIgnoreCase("ZULTE WAREGEM")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("Westerlo") && team.getName().equalsIgnoreCase("KVC Westerlo"))) {
+                        result.setAwayTeamId(team.getId());
+                        team.addAwayResults(result);
+                        break;
+                    }
+                }
+        }
+    }
+
 
     private ArrayList<Results> getHomeTeamScores(String[] results, String year) throws ParseException {
-        // row 0 -> headers, não interessa para aqui
-        ArrayList<Results> finalResults = new ArrayList<Results>();
-        ArrayList<String> headers = new ArrayList<String>(Arrays.asList(results[0].split(",")));
 
-        for (int i = 1; i < results.length; i++) {
-            String[] tmp = results[i].split(",");
-            if(headers.indexOf("Avg>2.5") > 0)
-            finalResults.add(new Results(tmp[headers.indexOf("Div")],year.replaceAll(".csv", ""),tmp[headers.indexOf("HomeTeam")],tmp[headers.indexOf("AwayTeam")],tmp[headers.indexOf("Date")],tmp[headers.indexOf("FTHG")],
-                    tmp[headers.indexOf("FTAG")],tmp[headers.indexOf("FTR")],tmp[headers.indexOf("AvgH")],tmp[headers.indexOf("AvgD")],
-                    tmp[headers.indexOf("AvgA")],tmp[headers.indexOf("Avg>2.5")],tmp[headers.indexOf("Avg<2.5")]));
-            else
-                finalResults.add(new Results(tmp[headers.indexOf("Div")],year.replaceAll(".csv", ""),tmp[headers.indexOf("HomeTeam")],tmp[headers.indexOf("AwayTeam")],tmp[headers.indexOf("Date")],tmp[headers.indexOf("FTHG")],
-                        tmp[headers.indexOf("FTAG")],tmp[headers.indexOf("FTR")],tmp[headers.indexOf("B365H")],tmp[headers.indexOf("B365D")],
-                        tmp[headers.indexOf("B365A")],tmp[headers.indexOf("BbAv>2.5")],tmp[headers.indexOf("BbAv<2.5")]));
+            // row 0 -> headers, não interessa para aqui
+            ArrayList<Results> finalResults = new ArrayList<Results>();
+            ArrayList<String> headers = new ArrayList<String>(Arrays.asList(results[0].split(",")));
 
-        }
-        return finalResults;
+            for (int i = 1; i < results.length; i++) {
+                String[] tmp = new String[0];
+                try {
+                    tmp = results[i].split(",");
+                    //Some files have lines with nothing, on those cases, we skip
+                    if(tmp[headers.indexOf("Date")] == null || tmp[headers.indexOf("Date")].isEmpty()){
+                        continue;
+                    }
+                    if (headers.indexOf("Avg>2.5") > 0)
+                        finalResults.add(new Results(tmp[headers.indexOf("Div")], year.replaceAll(".csv", ""), tmp[headers.indexOf("HomeTeam")], tmp[headers.indexOf("AwayTeam")], tmp[headers.indexOf("Date")], tmp[headers.indexOf("FTHG")],
+                                tmp[headers.indexOf("FTAG")], tmp[headers.indexOf("FTR")], tmp[headers.indexOf("AvgH")], tmp[headers.indexOf("AvgD")],
+                                tmp[headers.indexOf("AvgA")], tmp[headers.indexOf("Avg>2.5")], tmp[headers.indexOf("Avg<2.5")]));
+                    else
+                        finalResults.add(new Results(tmp[headers.indexOf("Div")], year.replaceAll(".csv", ""), tmp[headers.indexOf("HomeTeam")], tmp[headers.indexOf("AwayTeam")], tmp[headers.indexOf("Date")], tmp[headers.indexOf("FTHG")],
+                                tmp[headers.indexOf("FTAG")], tmp[headers.indexOf("FTR")], tmp[headers.indexOf("B365H")], tmp[headers.indexOf("B365D")],
+                                tmp[headers.indexOf("B365A")], tmp[headers.indexOf("BbAv>2.5")], tmp[headers.indexOf("BbAv<2.5")]));
+                } catch (ArrayIndexOutOfBoundsException e) {
+                  continue;
+                }
+            }
+            return finalResults;
+
     }
 
     private String readCVSFilesDates() throws FileNotFoundException, ParseException {
@@ -220,6 +298,7 @@ Stoke -> Stoke City*/
 
             }
             if (teamsAndIds.size() == 0) {
+                System.out.println("resultObj: " + resultArray );
                 System.out.println("NOTHING TO SHOW");
             }
             return teamsAndIds;

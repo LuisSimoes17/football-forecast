@@ -2,6 +2,7 @@ package MoneyMakers;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Results {
@@ -23,7 +24,6 @@ public class Results {
     private String Market_average_under_2_5_goals;
 
     public Results(String division, String season, String homeTeamName, String awayTeamName, String gameDate, String full_Time_Home_Team_Goals, String full_Time_Away_Team_Goals, String full_Time_Result, String market_average_home_win_odds, String market_average_draw_win_odds, String market_average_away_win_odds, String market_average_over_2_5_goals, String market_average_under_2_5_goals) throws ParseException {
-        System.out.println("gameDate: " + gameDate);
         this.season = season;
         Division = division;
         HomeTeamName = homeTeamName;
@@ -228,6 +228,7 @@ public class Results {
     public void setDivision(String division) {
         Division = division;
     }
+
     public String getGameDateFormated() {
         if(GameDate != null){
         //System.out.println("BATATA " + getAwayTeamScore() + getHomeTeamScore() +getAwayTeamName() +getHomeTeamName());
@@ -236,5 +237,17 @@ public class Results {
         }
         else
             return "00/00/0000";
+    }
+
+    public boolean homeTeamsWithId0(){
+        if (this.getHomeTeamId() == 0)
+            return true;
+        return false;
+    }
+
+    public boolean awayTeamsWithId0(){
+        if (this.getAwayTeamId() == 0)
+            return true;
+        return false;
     }
 }

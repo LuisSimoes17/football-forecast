@@ -33,7 +33,7 @@ public class LeagueIds {
                 return 197;
             case "Italy_SerieA":
                 return 135;
-            case "Italy_Serieb":
+            case "Italy_SerieB":
                 return 136;
             case "Netherlands_Eredivisie":
                 return 88;
