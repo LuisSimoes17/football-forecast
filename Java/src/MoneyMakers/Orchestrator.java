@@ -4,7 +4,6 @@ import com.opencsv.CSVWriter;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ResultTreeType;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -63,12 +62,9 @@ public class Orchestrator {
             String value = teamAndIds.get(name).toString().replaceAll("\"", "");
             teamsData.add(new TeamData(value, key));
         }
-        /*for (TeamData team : teamsData) {
+      /*  for (TeamData team : teamsData) {
             System.out.println("team.getName(): " + team.getName());
         }*/
-        for (Results result : results) {
-            System.out.println("result.getHomeTeamName(): " + result.getHomeTeamName());
-        }
         for (Results result : results) {
             for (TeamData team : teamsData) {
                 if (result.getHomeTeamName().equalsIgnoreCase(team.getName())) {
@@ -98,11 +94,6 @@ public class Orchestrator {
             if (result.homeTeamsWithId0())
                 for (TeamData team : teamsData) {
                     if (result.getHomeTeamName().equalsIgnoreCase(team.getName()) ||
-                            (result.getHomeTeamName().equalsIgnoreCase("MAN CITY") && team.getName().equalsIgnoreCase("MANCHESTER CITY")) ||
-                            (result.getHomeTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED")) ||
-                            (result.getHomeTeamName().equalsIgnoreCase("HULL CITY") && team.getName().equalsIgnoreCase("HULL")) ||
-                            (result.getHomeTeamName().equalsIgnoreCase("SHEFFIELD UTD") && team.getName().equalsIgnoreCase("SHEFFIELD UNITED")) ||
-                            (result.getHomeTeamName().equalsIgnoreCase("STOKE CITY") && team.getName().equalsIgnoreCase("STOKE")) ||
                             (result.getHomeTeamName().equalsIgnoreCase("Beerschot VA") && team.getName().equalsIgnoreCase("BEERSCHOT WILRIJK")) ||
                             (result.getHomeTeamName().equalsIgnoreCase("BERGEN") && team.getName().equalsIgnoreCase("MONS")) ||
                             (result.getHomeTeamName().equalsIgnoreCase("CLUB BRUGGE") && team.getName().equalsIgnoreCase("Club Brugge KV")) ||
@@ -117,7 +108,80 @@ public class Orchestrator {
                             (result.getHomeTeamName().equalsIgnoreCase("ST. GILLOISE") && team.getName().equalsIgnoreCase("UNION ST. GILLOISE")) ||
                             (result.getHomeTeamName().equalsIgnoreCase("STANDARD") && team.getName().equalsIgnoreCase("STANDARD LIEGE")) ||
                             (result.getHomeTeamName().equalsIgnoreCase("WAREGEM") && team.getName().equalsIgnoreCase("ZULTE WAREGEM")) ||
-                            (result.getHomeTeamName().equalsIgnoreCase("Westerlo") && team.getName().equalsIgnoreCase("KVC Westerlo"))) {
+                            (result.getHomeTeamName().equalsIgnoreCase("Westerlo") && team.getName().equalsIgnoreCase("KVC Westerlo")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("MAN CITY") && team.getName().equalsIgnoreCase("MANCHESTER CITY")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("HULL") && team.getName().equalsIgnoreCase("Hull City")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("SHEFFIELD UTD") && team.getName().equalsIgnoreCase("SHEFFIELD UNITED")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("Burton") && team.getName().equalsIgnoreCase("Burton Albion")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("Hull city") && team.getName().equalsIgnoreCase("Hull")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("Nott'm Forest") && team.getName().equalsIgnoreCase("Nottingham Forest"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Peterboro") && team.getName().equalsIgnoreCase("Peterborough"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Scunthorpe") && team.getName().equalsIgnoreCase("STOKE"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Sheffield United") && team.getName().equalsIgnoreCase("Sheffield Utd"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Sheffield Weds") && team.getName().equalsIgnoreCase("Sheffield Wednesday"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("STOKE") && team.getName().equalsIgnoreCase("Stoke City"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Yeovil") && team.getName().equalsIgnoreCase("Yeovil Town"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Ajaccio GFCO") && team.getName().equalsIgnoreCase("Ajaccio"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Clermont") && team.getName().equalsIgnoreCase("Clermont Foot"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Evian Thonon Gaillard") && team.getName().equalsIgnoreCase("Evian TG"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Paris SG") && team.getName().equalsIgnoreCase("Paris Saint Germain"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("St Etienne") && team.getName().equalsIgnoreCase("Saint Etienne"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Troyes") && team.getName().equalsIgnoreCase("Estac Troyes"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Brest") && team.getName().equalsIgnoreCase("Stade Brestois 29"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Pau fc") && team.getName().equalsIgnoreCase("Pau"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Quevilly Rouen") && team.getName().equalsIgnoreCase("Quevilly"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Bourg") && team.getName().equalsIgnoreCase("Bourg-en-bresse 01"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Chambly") && team.getName().equalsIgnoreCase("Chambly Thelle FC"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("RED Star") && team.getName().equalsIgnoreCase("RED Star FC 93"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Quevilly Rouen") && team.getName().equalsIgnoreCase("Quevilly"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Bourg Peronnas") && team.getName().equalsIgnoreCase("Bourg-en-bresse 01"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Augsburg") && team.getName().equalsIgnoreCase("FC Augsburg"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Bayern Munich") && team.getName().equalsIgnoreCase("Bayern Munich"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Bielefeld") && team.getName().equalsIgnoreCase("Arminia Bielefeld"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Bochum") && team.getName().equalsIgnoreCase("VfL BOCHUM"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Braunschweig") && team.getName().equalsIgnoreCase("Eintracht Braunschweig"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Darmstadt") && team.getName().equalsIgnoreCase("SV Darmstadt 98"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Dortmund") && team.getName().equalsIgnoreCase("Borussia Dortmund"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Ein Frankfurt") && team.getName().equalsIgnoreCase("Eintracht Frankfurt"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Fortuna Dusseldorf") && team.getName().equalsIgnoreCase("Fortuna Dusseldorf"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Freiburg") && team.getName().equalsIgnoreCase("SC Freiburg"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Greuther Furth") && team.getName().equalsIgnoreCase("SpVgg Greuther Furth"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Hamburg") && team.getName().equalsIgnoreCase("Hamburger SV"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Hannover") && team.getName().equalsIgnoreCase("Hannover 96"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Hertha") && team.getName().equalsIgnoreCase("Hertha Berlin"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Hoffenheim") && team.getName().equalsIgnoreCase("1899 Hoffenheim"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Ingolstadt") && team.getName().equalsIgnoreCase("FC Ingolstadt 04"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Kaiserslautern") && team.getName().equalsIgnoreCase("FC Kaiserslautern"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Leverkusen") && team.getName().equalsIgnoreCase("Bayer Leverkusen"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("M'gladbach") && team.getName().equalsIgnoreCase("Borussia Monchengladbach"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Mainz") && team.getName().equalsIgnoreCase("FSV Mainz 05"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Nurnberg") && team.getName().equalsIgnoreCase("FC Nurnberg"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Paderborn") && team.getName().equalsIgnoreCase("SC Paderborn 07"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("RB Leipzig") && team.getName().equalsIgnoreCase("RB Leipzig"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Schalke 04") && team.getName().equalsIgnoreCase("FC Schalke 04"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("St Pauli") && team.getName().equalsIgnoreCase("FC St. Pauli"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Stuttgart") && team.getName().equalsIgnoreCase("VfB Stuttgart"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Union Berlin") && team.getName().equalsIgnoreCase("Union Berlin"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Werder Bremen") && team.getName().equalsIgnoreCase("Werder Bremen"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Wolfsburg") && team.getName().equalsIgnoreCase("VfL Wolfsburg"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Aachen") && team.getName().equalsIgnoreCase("Alemannia Aachen"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Aalen") && team.getName().equalsIgnoreCase("VfR Aalen"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Augsburg") && team.getName().equalsIgnoreCase("VfL Wolfsburg"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Cottbus") && team.getName().equalsIgnoreCase("Energie Cottbus"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Dresden") && team.getName().equalsIgnoreCase("Dynamo Dresden"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Duisburg") && team.getName().equalsIgnoreCase("MSV Duisburg"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Frankfurt FSV") && team.getName().equalsIgnoreCase("FSV Frankfurt"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Heidenheim") && team.getName().equalsIgnoreCase("FC Heidenheim"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Karlsruhe") && team.getName().equalsIgnoreCase("Karlsruher SC"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Magdeburg") && team.getName().equalsIgnoreCase("FC Magdeburg"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Munich 1860") && team.getName().equalsIgnoreCase("TSV 1860 Munich"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Oberhausen") && team.getName().equalsIgnoreCase("VfL Wolfsburg"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Osnabruck") && team.getName().equalsIgnoreCase("VfL Osnabruck"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Regensburg") && team.getName().equalsIgnoreCase("Jahn Regensburg"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Sandhausen") && team.getName().equalsIgnoreCase("SV Sandhausen"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Wehen") && team.getName().equalsIgnoreCase("SV Wehen"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Wurzburger Kickers") && team.getName().equalsIgnoreCase("FC Wurzburger Kickers"))) {
                         result.setHomeTeamId(team.getId());
                         team.addHomeResults(result);
                         break;
@@ -131,11 +195,6 @@ public class Orchestrator {
             if (result.awayTeamsWithId0())
                 for (TeamData team : teamsData) {
                     if (result.getAwayTeamName().equalsIgnoreCase(team.getName()) ||
-                            (result.getAwayTeamName().equalsIgnoreCase("MAN CITY") && team.getName().equalsIgnoreCase("MANCHESTER CITY")) ||
-                            (result.getAwayTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED")) ||
-                            (result.getAwayTeamName().equalsIgnoreCase("HULL CITY") && team.getName().equalsIgnoreCase("HULL")) ||
-                            (result.getAwayTeamName().equalsIgnoreCase("SHEFFIELD UTD") && team.getName().equalsIgnoreCase("SHEFFIELD UNITED")) ||
-                            (result.getAwayTeamName().equalsIgnoreCase("STOKE CITY") && team.getName().equalsIgnoreCase("STOKE")) ||
                             (result.getAwayTeamName().equalsIgnoreCase("Beerschot VA") && team.getName().equalsIgnoreCase("BEERSCHOT WILRIJK")) ||
                             (result.getAwayTeamName().equalsIgnoreCase("BERGEN") && team.getName().equalsIgnoreCase("MONS")) ||
                             (result.getAwayTeamName().equalsIgnoreCase("CLUB BRUGGE") && team.getName().equalsIgnoreCase("Club Brugge KV")) ||
@@ -150,7 +209,80 @@ public class Orchestrator {
                             (result.getAwayTeamName().equalsIgnoreCase("ST. GILLOISE") && team.getName().equalsIgnoreCase("UNION ST. GILLOISE")) ||
                             (result.getAwayTeamName().equalsIgnoreCase("STANDARD") && team.getName().equalsIgnoreCase("STANDARD LIEGE")) ||
                             (result.getAwayTeamName().equalsIgnoreCase("WAREGEM") && team.getName().equalsIgnoreCase("ZULTE WAREGEM")) ||
-                            (result.getAwayTeamName().equalsIgnoreCase("Westerlo") && team.getName().equalsIgnoreCase("KVC Westerlo"))) {
+                            (result.getAwayTeamName().equalsIgnoreCase("Westerlo") && team.getName().equalsIgnoreCase("KVC Westerlo")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("MAN CITY") && team.getName().equalsIgnoreCase("MANCHESTER CITY")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("MAN UNITED") && team.getName().equalsIgnoreCase("MANCHESTER UNITED")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("HULL") && team.getName().equalsIgnoreCase("Hull City")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("SHEFFIELD UTD") && team.getName().equalsIgnoreCase("SHEFFIELD UNITED")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("Burton") && team.getName().equalsIgnoreCase("Burton Albion")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("Hull city") && team.getName().equalsIgnoreCase("Hull")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("Nott'm Forest") && team.getName().equalsIgnoreCase("Nottingham Forest"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Peterboro") && team.getName().equalsIgnoreCase("Peterborough"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Scunthorpe") && team.getName().equalsIgnoreCase("STOKE"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Sheffield United") && team.getName().equalsIgnoreCase("Sheffield Utd"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Sheffield Weds") && team.getName().equalsIgnoreCase("Sheffield Wednesday"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("STOKE") && team.getName().equalsIgnoreCase("Stoke City"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Yeovil") && team.getName().equalsIgnoreCase("Yeovil Town"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Ajaccio GFCO") && team.getName().equalsIgnoreCase("Ajaccio"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Clermont") && team.getName().equalsIgnoreCase("Clermont Foot"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Evian Thonon Gaillard") && team.getName().equalsIgnoreCase("Evian TG"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Paris SG") && team.getName().equalsIgnoreCase("Paris Saint Germain"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("St Etienne") && team.getName().equalsIgnoreCase("Saint Etienne"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Troyes") && team.getName().equalsIgnoreCase("Estac Troyes"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Brest") && team.getName().equalsIgnoreCase("Stade Brestois 29"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Pau fc") && team.getName().equalsIgnoreCase("Pau"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Quevilly Rouen") && team.getName().equalsIgnoreCase("Quevilly"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Bourg") && team.getName().equalsIgnoreCase("Bourg-en-bresse 01"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Chambly") && team.getName().equalsIgnoreCase("Chambly Thelle FC"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("RED Star") && team.getName().equalsIgnoreCase("RED Star FC 93"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Quevilly Rouen") && team.getName().equalsIgnoreCase("Quevilly"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Bourg Peronnas") && team.getName().equalsIgnoreCase("Bourg-en-bresse 01"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Augsburg") && team.getName().equalsIgnoreCase("FC Augsburg"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Bayern Munich") && team.getName().equalsIgnoreCase("Bayern Munich"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Bielefeld") && team.getName().equalsIgnoreCase("Arminia Bielefeld"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Bochum") && team.getName().equalsIgnoreCase("VfL BOCHUM"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Braunschweig") && team.getName().equalsIgnoreCase("Eintracht Braunschweig"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Darmstadt") && team.getName().equalsIgnoreCase("SV Darmstadt 98"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Dortmund") && team.getName().equalsIgnoreCase("Borussia Dortmund"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Ein Frankfurt") && team.getName().equalsIgnoreCase("Eintracht Frankfurt"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Fortuna Dusseldorf") && team.getName().equalsIgnoreCase("Fortuna Dusseldorf"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Freiburg") && team.getName().equalsIgnoreCase("SC Freiburg"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Greuther Furth") && team.getName().equalsIgnoreCase("SpVgg Greuther Furth"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Hamburg") && team.getName().equalsIgnoreCase("Hamburger SV"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Hannover") && team.getName().equalsIgnoreCase("Hannover 96"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Hertha") && team.getName().equalsIgnoreCase("Hertha Berlin"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Hoffenheim") && team.getName().equalsIgnoreCase("1899 Hoffenheim"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Ingolstadt") && team.getName().equalsIgnoreCase("FC Ingolstadt 04"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Kaiserslautern") && team.getName().equalsIgnoreCase("FC Kaiserslautern"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Leverkusen") && team.getName().equalsIgnoreCase("Bayer Leverkusen"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("M'gladbach") && team.getName().equalsIgnoreCase("Borussia Monchengladbach"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Mainz") && team.getName().equalsIgnoreCase("FSV Mainz 05"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Nurnberg") && team.getName().equalsIgnoreCase("FC Nurnberg"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Paderborn") && team.getName().equalsIgnoreCase("SC Paderborn 07"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("RB Leipzig") && team.getName().equalsIgnoreCase("RB Leipzig"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Schalke 04") && team.getName().equalsIgnoreCase("FC Schalke 04"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("St Pauli") && team.getName().equalsIgnoreCase("FC St. Pauli"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Stuttgart") && team.getName().equalsIgnoreCase("VfB Stuttgart"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Union Berlin") && team.getName().equalsIgnoreCase("Union Berlin"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Werder Bremen") && team.getName().equalsIgnoreCase("Werder Bremen"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Wolfsburg") && team.getName().equalsIgnoreCase("VfL Wolfsburg"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Aachen") && team.getName().equalsIgnoreCase("Alemannia Aachen"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Aalen") && team.getName().equalsIgnoreCase("VfR Aalen"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Augsburg") && team.getName().equalsIgnoreCase("VfL Wolfsburg"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Cottbus") && team.getName().equalsIgnoreCase("Energie Cottbus"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Dresden") && team.getName().equalsIgnoreCase("Dynamo Dresden"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Duisburg") && team.getName().equalsIgnoreCase("MSV Duisburg"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Frankfurt FSV") && team.getName().equalsIgnoreCase("FSV Frankfurt"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Heidenheim") && team.getName().equalsIgnoreCase("FC Heidenheim"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Karlsruhe") && team.getName().equalsIgnoreCase("Karlsruher SC"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Magdeburg") && team.getName().equalsIgnoreCase("FC Magdeburg"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Munich 1860") && team.getName().equalsIgnoreCase("TSV 1860 Munich"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Oberhausen") && team.getName().equalsIgnoreCase("VfL Wolfsburg"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Osnabruck") && team.getName().equalsIgnoreCase("VfL Osnabruck"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Regensburg") && team.getName().equalsIgnoreCase("Jahn Regensburg"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Sandhausen") && team.getName().equalsIgnoreCase("SV Sandhausen"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Wehen") && team.getName().equalsIgnoreCase("SV Wehen"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Wurzburger Kickers") && team.getName().equalsIgnoreCase("FC Wurzburger Kickers"))) {
                         result.setAwayTeamId(team.getId());
                         team.addAwayResults(result);
                         break;
@@ -242,7 +374,7 @@ public class Orchestrator {
     }
 
 
-    private static HashMap<String, String> fetchTeamAndIds(HttpURLConnection conn, String season) throws IOException {
+    private HashMap<String, String> fetchTeamAndIds(HttpURLConnection conn, String season) throws IOException {
         BufferedReader br = null;
         try {
             br = null;
@@ -298,8 +430,7 @@ public class Orchestrator {
 
             }
             if (teamsAndIds.size() == 0) {
-                System.out.println("resultObj: " + resultArray );
-                System.out.println("NOTHING TO SHOW");
+                System.out.println("Nothing to show for season " + season + " and id " + this.LeagueId);
             }
             return teamsAndIds;
         } catch (Exception e) {
