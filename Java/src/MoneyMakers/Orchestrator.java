@@ -430,7 +430,7 @@ public class Orchestrator {
 
             }
             if (teamsAndIds.size() == 0) {
-                System.out.println("Nothing to show for season " + season + " and id " + this.LeagueId);
+                System.out.println("Nothing to show for season " + season + " and League id " + this.LeagueId);
             }
             return teamsAndIds;
         } catch (Exception e) {

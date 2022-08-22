@@ -32,7 +32,6 @@ public class General {
             int id = leagueIds.getLeagueIds(dirName);
             path = path.replace("//", "/");
             if(id != 0){
-                System.out.println("Calling orchestrator with id = " + id + " and years = " + years + ", filename is going to be " + dirName + " path" + path);
                 orchestrator.start(id,years, dirName, path);
             }
             else {
