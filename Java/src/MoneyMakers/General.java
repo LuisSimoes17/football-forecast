@@ -32,10 +32,7 @@ public class General {
             int id = leagueIds.getLeagueIds(dirName);
             path = path.replace("//", "/");
             if(id != 0){
-                orchestrator.start(id,years, dirName, path);
-            }
-            else {
-                System.out.println("No id found for league " + dirName);
+                orchestrator.start(dirName, id,years, dirName, path);
             }
         } else {
             System.out.println("No files found on directory " + path);

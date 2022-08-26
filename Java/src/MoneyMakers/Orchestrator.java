@@ -25,12 +25,14 @@ public class Orchestrator {
     private static final String FilePath = "files/";
     private String CSV_FILE_NAME ;
     private int LeagueId ;
+    private String LeagueName ;
 
 
 
-    public void start(int id, String years, String filename, String path) throws IOException, ParseException {
+    public void start(String leagueName, int id, String years, String filename, String path) throws IOException, ParseException {
         this.CSV_FILE_NAME = filename + ".csv";
         this.LeagueId = id;
+        this.LeagueName = leagueName;
         //System.out.println("LeagueId: " + LeagueId + " filename:" + CSV_FILE_NAME + " years: " + years);
         ArrayList<Results> results = new ArrayList<Results>();
         HashMap<String, String> teamAndIds = new HashMap<String, String>();
@@ -62,7 +64,7 @@ public class Orchestrator {
             String value = teamAndIds.get(name).toString().replaceAll("\"", "");
             teamsData.add(new TeamData(value, key));
         }
-      /*  for (TeamData team : teamsData) {
+       /* for (TeamData team : teamsData) {
             System.out.println("team.getName(): " + team.getName());
         }*/
         for (Results result : results) {
@@ -85,6 +87,10 @@ public class Orchestrator {
         }
         teamNameHammerHome(results,teamsData);
         teamNameHammerAway(results,teamsData);
+
+        results.removeIf(r -> r.getHomeTeamId() == 0 );
+        results.removeIf(r -> r.getAwayTeamId() == 0 );
+
         return results;
     }
 
@@ -181,7 +187,84 @@ public class Orchestrator {
                             (result.getHomeTeamName().equalsIgnoreCase("Regensburg") && team.getName().equalsIgnoreCase("Jahn Regensburg"))||
                             (result.getHomeTeamName().equalsIgnoreCase("Sandhausen") && team.getName().equalsIgnoreCase("SV Sandhausen"))||
                             (result.getHomeTeamName().equalsIgnoreCase("Wehen") && team.getName().equalsIgnoreCase("SV Wehen"))||
-                            (result.getHomeTeamName().equalsIgnoreCase("Wurzburger Kickers") && team.getName().equalsIgnoreCase("FC Wurzburger Kickers"))) {
+                            (result.getHomeTeamName().equalsIgnoreCase("Wurzburger Kickers") && team.getName().equalsIgnoreCase("FC Wurzburger Kickers")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("AEK") && team.getName().equalsIgnoreCase("AEK Athens FC"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Apollon") && team.getName().equalsIgnoreCase("Apollon Smirnis"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Aris") && team.getName().equalsIgnoreCase("Aris Thessalonikis"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Giannina") && team.getName().equalsIgnoreCase("PAS Giannina"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Kallonis") && team.getName().equalsIgnoreCase("AEL Kallonis"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Kerkyra") && team.getName().equalsIgnoreCase("AOK Kerkyra"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Levadeiakos") && team.getName().equalsIgnoreCase("Levadiakos"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("OFI Crete") && team.getName().equalsIgnoreCase("OFI"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Olympiakos") && team.getName().equalsIgnoreCase("Olympiakos Piraeus"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Xanthi") && team.getName().equalsIgnoreCase("Xanthi FC"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Roma") && team.getName().equalsIgnoreCase("AS Roma"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Milan") && team.getName().equalsIgnoreCase("AC Milan"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Siena") && team.getName().equalsIgnoreCase("Robur Siena"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Vicenza") && team.getName().equalsIgnoreCase("Vicenza Virtus"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Den Haag") && team.getName().equalsIgnoreCase("ADO Den Haag"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("FC Emmen") && team.getName().equalsIgnoreCase("Emmen"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Feyenoord") && team.getName().equalsIgnoreCase("Feyenoord"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("For Sittard") && team.getName().equalsIgnoreCase("Fortuna Sittard"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Graafschap") && team.getName().equalsIgnoreCase("De Graafschap"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Groningen") && team.getName().equalsIgnoreCase("Groningen"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Heracles") && team.getName().equalsIgnoreCase("Heracles"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Nijmegen") && team.getName().equalsIgnoreCase("NEC Nijmegen"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Roda") && team.getName().equalsIgnoreCase("Roda"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Utrecht") && team.getName().equalsIgnoreCase("Utrecht"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Volendam") && team.getName().equalsIgnoreCase("FC Volendam"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Willem II") && team.getName().equalsIgnoreCase("Willem II"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Zwolle") && team.getName().equalsIgnoreCase("PEC Zwolle"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Beira Mar") && team.getName().equalsIgnoreCase("Beira-Mar"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Feirense") && team.getName().equalsIgnoreCase("Feirense"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Leiria") && team.getName().equalsIgnoreCase("União de Leiria"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Naval") && team.getName().equalsIgnoreCase("Naval 1º de Maio"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Porto") && team.getName().equalsIgnoreCase("FC Porto"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Setubal") && team.getName().equalsIgnoreCase("Vitoria Setubal"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Sp Braga") && team.getName().equalsIgnoreCase("SC Braga"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Sp Lisbon") && team.getName().equalsIgnoreCase("Sporting CP"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Uniao Madeira") && team.getName().equalsIgnoreCase("U. Madeira"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Ath Bilbao") && team.getName().equalsIgnoreCase("Athletic Club"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Vallecano") && team.getName().equalsIgnoreCase("Rayo Vallecano"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Ath Madrid") && team.getName().equalsIgnoreCase("Atletico Madrid"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Betis") && team.getName().equalsIgnoreCase("Real Betis"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Celta") && team.getName().equalsIgnoreCase("Celta Vigo"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Espanol") && team.getName().equalsIgnoreCase("Espanyol"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Granada") && team.getName().equalsIgnoreCase("Granada CF"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Hercules") && team.getName().equalsIgnoreCase("Hércules"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("La Coruna") && team.getName().equalsIgnoreCase("Deportivo La Coruna"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Santander") && team.getName().equalsIgnoreCase("Racing Santander"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Sociedad") && team.getName().equalsIgnoreCase("Real Sociedad"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Sp Gijon") && team.getName().equalsIgnoreCase("Sporting Gijon"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Villarreal B")  && team.getName().equalsIgnoreCase("Villarreal II")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("Sevilla B")  && team.getName().equalsIgnoreCase("Sevilla Atletico")) ||
+                            (result.getHomeTeamName().equalsIgnoreCase("Alaves") && team.getName().equalsIgnoreCase("Alaves"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Castellon") && team.getName().equalsIgnoreCase("Castellón"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Logrones") && team.getName().equalsIgnoreCase("UD Logroñés"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Alaves") && team.getName().equalsIgnoreCase("Alaves"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Alaves") && team.getName().equalsIgnoreCase("Alaves"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Cartagena") && team.getName().equalsIgnoreCase("FC Cartagena"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Extremadura UD") && team.getName().equalsIgnoreCase("Extremadura"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Leonesa") && team.getName().equalsIgnoreCase("Cultural Leonesa"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Lorca") && team.getName().equalsIgnoreCase("Lorca FC"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Murcia") && team.getName().equalsIgnoreCase("Ucam Murcia"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Reus Deportiu") && team.getName().equalsIgnoreCase("Reus"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Sociedad B") && team.getName().equalsIgnoreCase("Real Sociedad II"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Villarreal") && team.getName().equalsIgnoreCase("Villarreal"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Ad. Demirspor") && team.getName().equalsIgnoreCase("Adana Demirspor"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Akhisar Belediyespor") && team.getName().equalsIgnoreCase("Akhisar Belediye"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Bucaspor") && team.getName().equalsIgnoreCase("Bursaspor"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Buyuksehyr") && team.getName().equalsIgnoreCase("Istanbul Basaksehir"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Elazigspor") && team.getName().equalsIgnoreCase("Elazığspor"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Erciyesspor") && team.getName().equalsIgnoreCase("Kayseri Erciyesspor"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Eskisehirspor") && team.getName().equalsIgnoreCase("Eskişehirspor"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Gaziantep") && team.getName().equalsIgnoreCase("Gazişehir Gaziantep"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Goztep") && team.getName().equalsIgnoreCase("Goztepe"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Karabukspor") && team.getName().equalsIgnoreCase("Kardemir Karabukspor"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Karagumruk") && team.getName().equalsIgnoreCase("Fatih Karagümrük"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Mersin Idman Yurdu") && team.getName().equalsIgnoreCase("Mersin İdmanyurdu"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Umraniyespor") && team.getName().equalsIgnoreCase("Ümraniyespor"))||
+                            (result.getHomeTeamName().equalsIgnoreCase("Osmanlispor") && team.getName().equalsIgnoreCase("Ankaraspor"))) {
                         result.setHomeTeamId(team.getId());
                         team.addHomeResults(result);
                         break;
@@ -282,7 +365,78 @@ public class Orchestrator {
                             (result.getAwayTeamName().equalsIgnoreCase("Regensburg") && team.getName().equalsIgnoreCase("Jahn Regensburg"))||
                             (result.getAwayTeamName().equalsIgnoreCase("Sandhausen") && team.getName().equalsIgnoreCase("SV Sandhausen"))||
                             (result.getAwayTeamName().equalsIgnoreCase("Wehen") && team.getName().equalsIgnoreCase("SV Wehen"))||
-                            (result.getAwayTeamName().equalsIgnoreCase("Wurzburger Kickers") && team.getName().equalsIgnoreCase("FC Wurzburger Kickers"))) {
+                            (result.getAwayTeamName().equalsIgnoreCase("Wurzburger Kickers") && team.getName().equalsIgnoreCase("FC Wurzburger Kickers")) ||
+                            (result.getAwayTeamName().equalsIgnoreCase("AEK") && team.getName().equalsIgnoreCase("AEK Athens FC"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Apollon") && team.getName().equalsIgnoreCase("Apollon Smirnis"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Aris") && team.getName().equalsIgnoreCase("Aris Thessalonikis"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Giannina") && team.getName().equalsIgnoreCase("PAS Giannina"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Kallonis") && team.getName().equalsIgnoreCase("AEL Kallonis"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Kerkyra") && team.getName().equalsIgnoreCase("AOK Kerkyra"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Levadeiakos") && team.getName().equalsIgnoreCase("Levadiakos"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("OFI Crete") && team.getName().equalsIgnoreCase("OFI"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Olympiakos") && team.getName().equalsIgnoreCase("Olympiakos Piraeus"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Xanthi") && team.getName().equalsIgnoreCase("Xanthi FC"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Roma") && team.getName().equalsIgnoreCase("AS Roma"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Milan") && team.getName().equalsIgnoreCase("AC Milan"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Siena") && team.getName().equalsIgnoreCase("Robur Siena"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Vicenza") && team.getName().equalsIgnoreCase("Vicenza Virtus"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Den Haag") && team.getName().equalsIgnoreCase("ADO Den Haag"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("FC Emmen") && team.getName().equalsIgnoreCase("Emmen"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Feyenoord") && team.getName().equalsIgnoreCase("Feyenoord"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("For Sittard") && team.getName().equalsIgnoreCase("Fortuna Sittard"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Graafschap") && team.getName().equalsIgnoreCase("De Graafschap"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Groningen") && team.getName().equalsIgnoreCase("Groningen"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Heracles") && team.getName().equalsIgnoreCase("Heracles"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Nijmegen") && team.getName().equalsIgnoreCase("NEC Nijmegen"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Roda") && team.getName().equalsIgnoreCase("Roda"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Utrecht") && team.getName().equalsIgnoreCase("Utrecht"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Volendam") && team.getName().equalsIgnoreCase("FC Volendam"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Willem II") && team.getName().equalsIgnoreCase("Willem II"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Zwolle") && team.getName().equalsIgnoreCase("PEC Zwolle"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Beira Mar") && team.getName().equalsIgnoreCase("Beira-Mar"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Feirense") && team.getName().equalsIgnoreCase("Feirense"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Leiria") && team.getName().equalsIgnoreCase("União de Leiria"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Naval") && team.getName().equalsIgnoreCase("Naval 1º de Maio"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Porto") && team.getName().equalsIgnoreCase("FC Porto"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Setubal") && team.getName().equalsIgnoreCase("Vitoria Setubal"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Sp Braga") && team.getName().equalsIgnoreCase("SC Braga"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Sp Lisbon") && team.getName().equalsIgnoreCase("Sporting CP"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Uniao Madeira") && team.getName().equalsIgnoreCase("U. Madeira"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Ath Bilbao") && team.getName().equalsIgnoreCase("Athletic Club"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Vallecano") && team.getName().equalsIgnoreCase("Rayo Vallecano"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Ath Madrid") && team.getName().equalsIgnoreCase("Atletico Madrid"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Betis") && team.getName().equalsIgnoreCase("Real Betis"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Celta") && team.getName().equalsIgnoreCase("Celta Vigo"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Espanol") && team.getName().equalsIgnoreCase("Espanyol"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Granada") && team.getName().equalsIgnoreCase("Granada CF"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Hercules") && team.getName().equalsIgnoreCase("Hércules"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("La Coruna") && team.getName().equalsIgnoreCase("Deportivo La Coruna"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Santander") && team.getName().equalsIgnoreCase("Racing Santander"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Sociedad") && team.getName().equalsIgnoreCase("Real Sociedad"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Sp Gijon") && team.getName().equalsIgnoreCase("Sporting Gijon"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Alaves") && team.getName().equalsIgnoreCase("Alaves"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Cartagena") && team.getName().equalsIgnoreCase("FC Cartagena"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Extremadura UD") && team.getName().equalsIgnoreCase("Extremadura"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Leonesa") && team.getName().equalsIgnoreCase("Cultural Leonesa"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Lorca") && team.getName().equalsIgnoreCase("Lorca FC"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Murcia") && team.getName().equalsIgnoreCase("Ucam Murcia"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Reus Deportiu") && team.getName().equalsIgnoreCase("Reus"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Sociedad B") && team.getName().equalsIgnoreCase("Real Sociedad II"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Villarreal") && team.getName().equalsIgnoreCase("Villarreal"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Ad. Demirspor") && team.getName().equalsIgnoreCase("Adana Demirspor"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Akhisar Belediyespor") && team.getName().equalsIgnoreCase("Akhisar Belediye"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Bucaspor") && team.getName().equalsIgnoreCase("Bursaspor"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Buyuksehyr") && team.getName().equalsIgnoreCase("Istanbul Basaksehir"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Elazigspor") && team.getName().equalsIgnoreCase("Elazığspor"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Erciyesspor") && team.getName().equalsIgnoreCase("Kayseri Erciyesspor"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Eskisehirspor") && team.getName().equalsIgnoreCase("Eskişehirspor"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Gaziantep") && team.getName().equalsIgnoreCase("Gazişehir Gaziantep"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Goztep") && team.getName().equalsIgnoreCase("Goztepe"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Karabukspor") && team.getName().equalsIgnoreCase("Kardemir Karabukspor"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Karagumruk") && team.getName().equalsIgnoreCase("Fatih Karagümrük"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Mersin Idman Yurdu") && team.getName().equalsIgnoreCase("Mersin İdmanyurdu"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Umraniyespor") && team.getName().equalsIgnoreCase("Ümraniyespor"))||
+                            (result.getAwayTeamName().equalsIgnoreCase("Osmanlispor") && team.getName().equalsIgnoreCase("Ankaraspor"))) {
                         result.setAwayTeamId(team.getId());
                         team.addAwayResults(result);
                         break;
@@ -430,7 +584,7 @@ public class Orchestrator {
 
             }
             if (teamsAndIds.size() == 0) {
-                System.out.println("Nothing to show for season " + season + " and League id " + this.LeagueId);
+                System.out.println("The API has nothing on the season " + season + " for the League " + this.LeagueName + " with id = " + this.LeagueId);
             }
             return teamsAndIds;
         } catch (Exception e) {
